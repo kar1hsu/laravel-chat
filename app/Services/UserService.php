@@ -58,4 +58,9 @@ class UserService extends BaseService
             'name' => $user->name,
         ];
     }
+
+    public function logout($request)
+    {
+        return [];
+    }
 }
