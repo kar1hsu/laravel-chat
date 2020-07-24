@@ -33,8 +33,29 @@ class UserService extends BaseService
         User::insert($add_data);
 
         return [
-            'token' => $uuid,
+            'token' => encrypt($uuid),
             'name' => $request->name,
+        ];
+    }
+
+
+    /**
+     * @param $request
+     * @return array
+     * @throws \Exception
+     */
+    public function login($request)
+    {
+        if(!$user = User::where('name', $request->name)->first()){
+            throw new \Exception('用户不存在');
+        }
+        if($user->password !== decrypt($request->password)){
+            throw new \Exception('密码错误');
+        }
+
+        return [
+            'token' => encrypt($user->uuid),
+            'name' => $user->name,
         ];
     }
 }
