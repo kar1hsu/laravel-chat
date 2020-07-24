@@ -3572,7 +3572,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Chat",
   mounted: function mounted() {
     console.log(localStorage.getItem("is_login")); //页面是否登录
 

@@ -10,7 +10,6 @@
 
 <script>
     export default {
-        name: "Chat",
         mounted() {
             console.log(localStorage.getItem("is_login"))
             //页面是否登录
