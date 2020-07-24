@@ -6,8 +6,12 @@ let routes = [
         component : require('./components/Chat').default
     },
     {
-        path : '/',
+        path : '/login',
         component : require('./components/user/login').default
+    },
+    {
+        path : '/register',
+        component : require('./components/user/register').default
     }
 ]
 

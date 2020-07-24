@@ -36,10 +36,10 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         <li class="nav-item">
-                            <a class="nav-link" href="">login</a>
+                            <a href="/login" class="nav-link">login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">register</a>
+                            <a href="/register" class="nav-link">register</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

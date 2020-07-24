@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
+Route::any('{all}', function () {
     return view('home');
-});
+})->where(['all' => '.*']);
 
 //Route::get('/', function () {
 //    return view('welcome');
