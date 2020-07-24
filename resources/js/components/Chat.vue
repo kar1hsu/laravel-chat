@@ -12,8 +12,9 @@
     export default {
         name: "Chat",
         mounted() {
+            console.log(localStorage.getItem("is_login"))
             //页面是否登录
-            if (!localStorage.getItem("token")) {
+            if (localStorage.getItem("is_login") === null) {
                 //本地存储中是否有token(uid)数据
                 this.$router.push("/login");
             }

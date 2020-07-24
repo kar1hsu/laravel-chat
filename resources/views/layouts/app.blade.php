@@ -35,27 +35,21 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                        <li class="nav-item">
+                        <li class="nav-item" id="login">
                             <a href="/login" class="nav-link">login</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" id="register">
                             <a href="/register" class="nav-link">register</a>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li id='show-my-name' class="nav-item dropdown" style="display: none" >
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                aaa <span class="caret"></span>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href=""
-                                   onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
+                                   onclick="logout()">
                                     logout
                                 </a>
-
-                                <form id="logout-form" action="" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
                             </div>
                         </li>
                     </ul>
@@ -68,4 +62,19 @@
         </main>
     </div>
 </body>
+<script>
+    window.onload = function(){
+        if(localStorage.getItem("is_login") !== null){
+            document.getElementById("login").style.display="none";
+            document.getElementById("register").style.display="none";
+            document.getElementById("show-my-name").style.display="block";
+            document.getElementById("navbarDropdown").innerHTML = localStorage.getItem("name");
+        }
+    }
+    function logout() {
+        localStorage.removeItem('is_login');
+        localStorage.removeItem('name');
+        localStorage.removeItem('token');
+    }
+</script>
 </html>

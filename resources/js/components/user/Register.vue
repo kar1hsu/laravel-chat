@@ -83,14 +83,19 @@
                     email: this.email,
                     password: this.password
                 }).then(response => {
-                    if(response.data.code === 1001){
+                    let data = response.data;
+                    if(data.code === 1001){
                         this.$message({
                             type: 'warning',
-                            message: response.data.message
+                            message: data.message
                         });
                         return;
                     }
+                    localStorage.setItem('is_login', 1);
+                    localStorage.setItem('name', data.data.name);
+                    localStorage.setItem('token', data.data.token);
                     console.log(response.data)
+                    this.$router.push('/');
                 })
             }
         },

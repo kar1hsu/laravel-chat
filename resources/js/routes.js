@@ -7,11 +7,11 @@ let routes = [
     },
     {
         path : '/login',
-        component : require('./components/user/login').default
+        component : require('./components/user/Login').default
     },
     {
         path : '/register',
-        component : require('./components/user/register').default
+        component : require('./components/user/Register').default
     }
 ]
 
