@@ -3571,6 +3571,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log(localStorage.getItem("is_login")); //页面是否登录
@@ -100305,7 +100324,38 @@ var staticRenderFns = [
       _c("div", { staticClass: "card-header" }, [_vm._v("聊天室")]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
-        _vm._v("\n        啊啊啊啊啊啊啊\n    ")
+        _c("div", { staticClass: "message", attrs: { id: "message" } }, [
+          _c("div", { staticClass: "send" }, [
+            _c("div", { staticClass: "time" }, [_vm._v("05/22 06:30")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "msg" }, [
+              _c("p", [_vm._v("你好！欢迎来到梦缘")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "show" }, [
+            _c("div", { staticClass: "time" }, [_vm._v("05/22 06:30")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "msg" }, [_c("p", [_vm._v("请文明发言")])])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "footer" }, [
+          _c("label", [
+            _c("input", {
+              attrs: {
+                type: "file",
+                name: "img",
+                id: "sendimg",
+                hidden: "hidden"
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("input", { attrs: { type: "text", id: "text" } }),
+          _vm._v(" "),
+          _c("p", [_vm._v("发送")])
+        ])
       ])
     ])
   }
