@@ -65,15 +65,22 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function postLogin(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:32'],
+            'name' => ['required', 'string', 'min:4', 'max:16'],
             'password' => ['required', 'string', 'min:6'],
+        ],[
+            'name.required'        =>'请输入用户名',
+            'name.min'        =>'请输入4位数以上的用户名',
+            'name.max'        =>'用户名不可超过16位',
+            'password.required'         =>'请输入密码',
+            'password.min'         =>'请输入6位数以上密码',
         ]);
         if ($validator->fails()) {
             $this->rets['code'] = 1001;
-            $this->rets['message'] = $validator;
+            $error = $validator->errors()->toArray();
+            $this->rets['message'] = reset($error)[0];
             return response()->json($this->rets);
         }
 

@@ -49,7 +49,7 @@ class UserService extends BaseService
         if(!$user = User::where('name', $request->name)->first()){
             throw new \Exception('用户不存在');
         }
-        if($user->password !== decrypt($request->password)){
+        if($request->password !== decrypt($user->password)){
             throw new \Exception('密码错误');
         }
 
