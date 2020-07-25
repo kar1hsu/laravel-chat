@@ -21,6 +21,7 @@ Route::prefix('user')->group(function () {
 
     Route::post('/register', 'Api\UserController@postRegister');
     Route::post('/login', 'Api\UserController@postLogin');
-    Route::get('/getFriend', 'Api\UserController@getFriend');
+    Route::post('/getFriend', 'Api\UserController@getFriend');
+    Route::post('/addFriend', 'Api\UserController@addFriend');
 
 });

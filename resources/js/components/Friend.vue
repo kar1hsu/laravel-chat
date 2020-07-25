@@ -1,7 +1,16 @@
 <template>
     <div class="row">
         <div class="col-md-2">
-
+            <div class="card-header">好友列表
+            <button class="float-right btn btn-info" v-on:click="addFriend()">添加好友</button>
+            </div>
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item" v-for="friend in friends" :key="friend.friend_id">
+                        {{ friend.name }}
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="col-md-8">
             <div class="card">
@@ -39,10 +48,11 @@
                 return;
             }
             this.init();
-            axios.get('/api/user/getFriend', {
+            axios.post('/api/user/getFriend', {
                 token: localStorage.getItem("token")
             }).then(response => {
                 console.log(response.data)
+                this.friends = response.data.data;
             })
         },
         data() {
@@ -139,6 +149,50 @@
                     let div = document.getElementById('message')
                     div.scrollTop = div.scrollHeight
                 })
+            },
+            addFriend: function () {
+                this.$messageBox.alert('请输入好友用户名', '提示', {
+                    showInput: true,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({ value }) => {
+                    if(value == null){
+                        this.$message({
+                            type: 'warning',
+                            message: '不能发送空白信息'
+                        });
+                        return;
+                    }
+                    if(value.split(" ").join("").length === 0){
+                        this.$message({
+                            type: 'warning',
+                            message: '不能发送空白信息'
+                        });
+                        return;
+                    }
+                    axios.post('/api/user/addFriend', {
+                        token : localStorage.getItem("token"),
+                        name: value
+                    }).then(response => {
+                        console.log(response.data)
+                        if(response.data.code !== 1000){
+                            this.$message({
+                                type: 'warning',
+                                message: response.data.message
+                            });
+                        }
+                        this.friends.push({
+                            name: response.data.data.name,
+                            friend_id: response.data.data.friend_id,
+                        });
+                        this.$message({
+                            type: 'success',
+                            message: '添加成功'
+                        });
+                    })
+                }).catch(() => {
+                    return;
+                });
             }
         },
         destroyed () {

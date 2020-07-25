@@ -3756,8 +3756,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
+    var _this = this;
+
     //页面是否登录
     if (localStorage.getItem("is_login") === null) {
       //本地存储中是否有token(uid)数据
@@ -3766,10 +3777,11 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     this.init();
-    axios.get('/api/user/getFriend', {
+    axios.post('/api/user/getFriend', {
       token: localStorage.getItem("token")
     }).then(function (response) {
       console.log(response.data);
+      _this.friends = response.data.data;
     });
   },
   data: function data() {
@@ -3871,6 +3883,61 @@ __webpack_require__.r(__webpack_exports__);
       this.$nextTick(function () {
         var div = document.getElementById('message');
         div.scrollTop = div.scrollHeight;
+      });
+    },
+    addFriend: function addFriend() {
+      var _this2 = this;
+
+      this.$messageBox.alert('请输入好友用户名', '提示', {
+        showInput: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(function (_ref) {
+        var value = _ref.value;
+
+        if (value == null) {
+          _this2.$message({
+            type: 'warning',
+            message: '不能发送空白信息'
+          });
+
+          return;
+        }
+
+        if (value.split(" ").join("").length === 0) {
+          _this2.$message({
+            type: 'warning',
+            message: '不能发送空白信息'
+          });
+
+          return;
+        }
+
+        axios.post('/api/user/addFriend', {
+          token: localStorage.getItem("token"),
+          name: value
+        }).then(function (response) {
+          console.log(response.data);
+
+          if (response.data.code !== 1000) {
+            _this2.$message({
+              type: 'warning',
+              message: response.data.message
+            });
+          }
+
+          _this2.friends.push({
+            name: response.data.data.name,
+            friend_id: response.data.data.friend_id
+          });
+
+          _this2.$message({
+            type: 'success',
+            message: '添加成功'
+          });
+        });
+      })["catch"](function () {
+        return;
       });
     }
   },
@@ -100716,7 +100783,44 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-2" }),
+    _c("div", { staticClass: "col-md-2" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _vm._v("好友列表\n        "),
+        _c(
+          "button",
+          {
+            staticClass: "float-right btn btn-info",
+            on: {
+              click: function($event) {
+                return _vm.addFriend()
+              }
+            }
+          },
+          [_vm._v("添加好友")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", [
+        _c(
+          "ul",
+          { staticClass: "list-group" },
+          _vm._l(_vm.friends, function(friend) {
+            return _c(
+              "li",
+              { key: friend.friend_id, staticClass: "list-group-item" },
+              [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(friend.name) +
+                    "\n                "
+                )
+              ]
+            )
+          }),
+          0
+        )
+      ])
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "col-md-8" }, [
       _c("div", { staticClass: "card" }, [

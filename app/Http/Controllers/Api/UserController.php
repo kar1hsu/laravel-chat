@@ -129,4 +129,21 @@ class UserController extends Controller
         }
         return response()->json($this->rets);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addFriend(Request $request)
+    {
+        try {
+            $data = $this->UserService->addFirend($request);
+            $this->rets['data'] = $data;
+        }catch (\Exception $exception){
+            $this->rets['code'] = 1001;
+            $this->rets['message'] = $exception->getMessage();
+            return response()->json($this->rets);
+        }
+        return response()->json($this->rets);
+    }
 }
