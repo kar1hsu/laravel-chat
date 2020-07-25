@@ -65,7 +65,6 @@ class WorkerManService extends BaseService
                 Gateway::joinGroup($client_id, $this->default_room_id);
                 // 发送通知
                 Gateway::sendToGroup($this->default_room_id, json_encode($new_message));
-                Log::info($uuid, $user);
                 break;
             case 'send': // 发送信息
                 switch ($message_data['send_type']) {
