@@ -2,10 +2,10 @@
     <div class="card">
         <div class="card-header">聊天室</div>
         <div class="card-body">
-            <div class="message" style="height: 480px;overflow: auto;" id="message">
+            <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
                 <div class="send" v-for="message in messages">
-                    <div class="name">{{ message.name }}</div>
-                    <div class="content">{{ message.content }}</div>
+                    <div class="name"></div>
+                    <div class="content">{{ message.name }} <span>：</span> {{ message.content }}</div>
                     <div class="time"><p>{{ message.time }}</p></div>
                 </div>
             </div>
@@ -29,6 +29,9 @@
                 this.$router.push("/login");
             }
             this.init();
+
+            var showdiv = document.getElementById("message")
+            showdiv.scrollTop = showdiv.scrollHeight
         },
         data() {
             return{
@@ -111,11 +114,20 @@
                     'content' : 'room',
                 };
                 this.send();
+            },
+            scrollToBottom: function () {
+                this.$nextTick(() => {
+                    let div = document.getElementById('message')
+                    div.scrollTop = div.scrollHeight
+                })
             }
         },
         destroyed () {
             // 销毁监听
             this.socket.onclose = this.close
+        },
+        watch: {
+            'messages': 'scrollToBottom'
         }
     }
 </script>

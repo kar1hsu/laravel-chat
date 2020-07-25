@@ -3592,6 +3592,8 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     this.init();
+    var showdiv = document.getElementById("message");
+    showdiv.scrollTop = showdiv.scrollHeight;
   },
   data: function data() {
     return {
@@ -3678,11 +3680,20 @@ __webpack_require__.r(__webpack_exports__);
         'content': 'room'
       };
       this.send();
+    },
+    scrollToBottom: function scrollToBottom() {
+      this.$nextTick(function () {
+        var div = document.getElementById('message');
+        div.scrollTop = div.scrollHeight;
+      });
     }
   },
   destroyed: function destroyed() {
     // 销毁监听
     this.socket.onclose = this.close;
+  },
+  watch: {
+    'messages': 'scrollToBottom'
   }
 });
 
@@ -100405,16 +100416,18 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "message",
-          staticStyle: { height: "480px", overflow: "auto" },
+          staticClass: "message pre-scrollable",
+          staticStyle: { height: "600px", overflow: "auto" },
           attrs: { id: "message" }
         },
         _vm._l(_vm.messages, function(message) {
           return _c("div", { staticClass: "send" }, [
-            _c("div", { staticClass: "name" }, [_vm._v(_vm._s(message.name))]),
+            _c("div", { staticClass: "name" }),
             _vm._v(" "),
             _c("div", { staticClass: "content" }, [
-              _vm._v(_vm._s(message.content))
+              _vm._v(_vm._s(message.name) + " "),
+              _c("span", [_vm._v("：")]),
+              _vm._v(" " + _vm._s(message.content))
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "time" }, [
