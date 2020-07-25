@@ -1,19 +1,26 @@
 <template>
-    <div class="card">
-        <div class="card-header">聊天室</div>
-        <div class="card-body">
-            <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
-                <div class="send" v-for="message in messages">
-                    <div class="name"></div>
-                    <div class="content">{{ message.name }} <span>：</span> {{ message.content }}</div>
-                    <div class="time"><p>{{ message.time }}</p></div>
-                </div>
-            </div>
-            <div class="divider"><hr style="border-top:1px dashed #987cb9;" width="100%" color="#987cb9" size=1></div>
-            <div class="footer">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="send message">
-                    <button type="submit" class="btn btn-primary" v-on:click="sendForRoom()">发送</button>
+    <div class="row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">聊天室</div>
+                <div class="card-body">
+                    <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
+                        <div class="send" v-for="message in messages">
+                            <div class="name"></div>
+                            <div class="content"><span class="label label-default">{{ message.name }}</span> ： {{ message.content }}</div>
+                            <div class="time"><p>{{ message.time }}</p></div>
+                        </div>
+                    </div>
+                    <div class="divider"><hr style="border-top:1px dashed #987cb9;" width="100%" color="#987cb9" size=1></div>
+                    <div class="footer">
+                        <div class="input-group">
+                            <input type="text" class="form-control" v-model="sendMessage" placeholder="send message">
+                            <button type="submit" class="btn btn-primary" v-on:click="sendForRoom()">发送</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,6 +43,7 @@
                 postData : {},
                 paramCodeData : {},
                 messages : [],
+                sendMessage : ''
             }
         },
         methods: {
@@ -103,15 +111,18 @@
                 console.log("socket已经关闭")
             },
             sendForRoom: function () {
+
+                let content = this.sendMessage;
                 // 发送群消息
                 this.postData = {
                     'token' : localStorage.getItem("token"),
                     // 'token' : 111,
                     'type' : 'send',
                     'send_type' : 'room',
-                    'content' : 'room',
+                    'content' : content,
                 };
                 this.send();
+                this.sendMessage = '';
             },
             scrollToMessages: function () {
                 this.$nextTick(() => {

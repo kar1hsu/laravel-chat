@@ -3540,12 +3540,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {}
 });
@@ -3583,6 +3577,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     //页面是否登录
@@ -3598,7 +3599,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       postData: {},
       paramCodeData: {},
-      messages: []
+      messages: [],
+      sendMessage: ''
     };
   },
   methods: {
@@ -3670,15 +3672,17 @@ __webpack_require__.r(__webpack_exports__);
       console.log("socket已经关闭");
     },
     sendForRoom: function sendForRoom() {
-      // 发送群消息
+      var content = this.sendMessage; // 发送群消息
+
       this.postData = {
         'token': localStorage.getItem("token"),
         // 'token' : 111,
         'type': 'send',
         'send_type': 'room',
-        'content': 'room'
+        'content': content
       };
       this.send();
+      this.sendMessage = '';
     },
     scrollToMessages: function scrollToMessages() {
       this.$nextTick(function () {
@@ -100380,11 +100384,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [_c("router-view")], 1)
-    ])
-  ])
+  return _c("router-view")
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -100408,57 +100408,81 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _c("div", { staticClass: "card-header" }, [_vm._v("聊天室")]),
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-md-2" }),
     _vm._v(" "),
-    _c("div", { staticClass: "card-body" }, [
-      _c(
-        "div",
-        {
-          staticClass: "message pre-scrollable",
-          staticStyle: { height: "600px", overflow: "auto" },
-          attrs: { id: "message" }
-        },
-        _vm._l(_vm.messages, function(message) {
-          return _c("div", { staticClass: "send" }, [
-            _c("div", { staticClass: "name" }),
-            _vm._v(" "),
-            _c("div", { staticClass: "content" }, [
-              _vm._v(_vm._s(message.name) + " "),
-              _c("span", [_vm._v("：")]),
-              _vm._v(" " + _vm._s(message.content))
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "time" }, [
-              _c("p", [_vm._v(_vm._s(message.time))])
+    _c("div", { staticClass: "col-md-8" }, [
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-header" }, [_vm._v("聊天室")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c(
+            "div",
+            {
+              staticClass: "message pre-scrollable",
+              staticStyle: { height: "600px", overflow: "auto" },
+              attrs: { id: "message" }
+            },
+            _vm._l(_vm.messages, function(message) {
+              return _c("div", { staticClass: "send" }, [
+                _c("div", { staticClass: "name" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "content" }, [
+                  _c("span", { staticClass: "label label-default" }, [
+                    _vm._v(_vm._s(message.name))
+                  ]),
+                  _vm._v(" ： " + _vm._s(message.content))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "time" }, [
+                  _c("p", [_vm._v(_vm._s(message.time))])
+                ])
+              ])
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "footer" }, [
+            _c("div", { staticClass: "input-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.sendMessage,
+                    expression: "sendMessage"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "send message" },
+                domProps: { value: _vm.sendMessage },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.sendMessage = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "submit" },
+                  on: {
+                    click: function($event) {
+                      return _vm.sendForRoom()
+                    }
+                  }
+                },
+                [_vm._v("发送")]
+              )
             ])
           ])
-        }),
-        0
-      ),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "footer" }, [
-        _c("div", { staticClass: "input-group" }, [
-          _c("input", {
-            staticClass: "form-control",
-            attrs: { type: "text", placeholder: "send message" }
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              attrs: { type: "submit" },
-              on: {
-                click: function($event) {
-                  return _vm.sendForRoom()
-                }
-              }
-            },
-            [_vm._v("发送")]
-          )
         ])
       ])
     ])
@@ -116007,6 +116031,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/_vue@2.6.11@vue/dist
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 Vue.prototype.$message = element_ui__WEBPACK_IMPORTED_MODULE_3__["Message"];
+Vue.prototype.$messageBox = element_ui__WEBPACK_IMPORTED_MODULE_3__["MessageBox"];
 Vue.component('app', _components_App__WEBPACK_IMPORTED_MODULE_2__["default"]);
 new Vue({
   el: '#app',
