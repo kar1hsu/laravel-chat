@@ -4,11 +4,14 @@
 namespace App\Services;
 
 
+use App\Models\User;
 use GatewayClient\Gateway;
+use Illuminate\Support\Facades\Log;
 
 class WorkerManService extends BaseService
 {
     protected $user;
+    protected $default_room_id = 'worker-default-room';
 
     public function webSocketConnect($client_id, $data)
     {
@@ -26,10 +29,14 @@ class WorkerManService extends BaseService
         try {
             // 解密uuid
             $uuid = decrypt($token);
-            $user = $uuid;
+            $user = User::where('uuid', $uuid)->first();
+            if(!$user){
+                throw new \Exception('1');
+            }
+            $user = $user->toArray();
         } catch (\Exception $exception) {
             $return['code'] = 9999;
-            $return['msg'] = 'un login';
+            $return['message'] = 'un login';
             // 提示用户登录并关闭当前链接
             Gateway::sendToClient($client_id, json_encode($return));
             Gateway::closeClient($client_id);
@@ -43,11 +50,27 @@ class WorkerManService extends BaseService
                 // 绑定uuid并设置session
                 Gateway::bindUid($client_id, $uuid);
                 Gateway::setSession($client_id, $user);
+                $new_message = array(
+                    'code' => 1000,
+                    'type' => 'send',
+                    'send_type' => 'room',
+                    'from_client_id' => 'worker',
+                    'from_client_name' => '通知',
+                    'to_room_id' => $this->default_room_id,
+                    'content' => $user['name'] ."加入房间",
+                    'time' => date('Y-m-d H:i:s'),
+                );
+                // 加入默认群组
+                Gateway::joinGroup($client_id, $this->default_room_id);
+                // 发送通知
+                Gateway::sendToGroup($this->default_room_id, json_encode($new_message));
+                Log::info($uuid, $user);
                 break;
             case 'send': // 发送信息
                 switch ($message_data['send_type']) {
                     case 'friend': // 发送给好友
                         $new_message = array(
+                            'code' => 1000,
                             'type' => 'send',
                             'send_type' => 'friend',
                             'from_client_id' => $uuid,
@@ -67,6 +90,7 @@ class WorkerManService extends BaseService
                         break;
                     case 'room': // 发送到群
                         $new_message = array(
+                            'code' => 1000,
                             'type' => 'send',
                             'send_type' => 'room',
                             'from_client_id' => $client_id,

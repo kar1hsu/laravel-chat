@@ -3585,12 +3585,90 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    console.log(localStorage.getItem("is_login")); //页面是否登录
-
+    //页面是否登录
     if (localStorage.getItem("is_login") === null) {
       //本地存储中是否有token(uid)数据
       this.$router.push("/login");
     }
+
+    this.init();
+  },
+  data: function data() {
+    return {
+      postData: {},
+      paramCodeData: {},
+      messages: []
+    };
+  },
+  methods: {
+    init: function init() {
+      if (typeof WebSocket === "undefined") {
+        this.$message({
+          type: 'warning',
+          message: '您的浏览器不支持socket'
+        });
+        return;
+      } // 实例化socket
+
+
+      this.socket = new WebSocket('ws://127.0.0.1:8080'); // 监听socket连接
+
+      this.socket.onopen = this.open; // 监听socket错误信息
+
+      this.socket.onerror = this.error; // 监听socket消息
+
+      this.socket.onmessage = this.getMessage;
+    },
+    open: function open() {
+      // 登录
+      this.postData = {
+        'token': localStorage.getItem("token"),
+        // 'token' : 111,
+        'type': 'login'
+      };
+      this.send();
+      console.log("socket连接成功");
+    },
+    error: function error() {
+      this.$message({
+        type: 'warning',
+        message: '连接错误'
+      });
+    },
+    getMessage: function getMessage(msg) {
+      console.log(msg.data);
+      var data = JSON.parse(msg.data);
+
+      if (data.code !== 1000) {
+        this.$message({
+          type: 'warning',
+          message: data.message
+        });
+      }
+
+      switch (data.type) {
+        case "send":
+          if (data.send_type === 'room') {
+            this.messages.push({
+              name: data.from_client_name,
+              content: data.content,
+              time: data.time
+            });
+          }
+
+          break;
+      }
+    },
+    send: function send() {
+      this.socket.send(JSON.stringify(this.postData));
+    },
+    close: function close() {
+      console.log("socket已经关闭");
+    }
+  },
+  destroyed: function destroyed() {
+    // 销毁监听
+    this.socket.onclose = this.close;
   }
 });
 
@@ -100306,58 +100384,67 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "card-header" }, [_vm._v("聊天室")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _c(
+        "div",
+        {
+          staticClass: "message",
+          staticStyle: { height: "480px", overflow: "auto" },
+          attrs: { id: "message" }
+        },
+        _vm._l(_vm.messages, function(message) {
+          return _c("div", { staticClass: "send" }, [
+            _c("div", { staticClass: "name" }, [_vm._v(_vm._s(message.name))]),
+            _vm._v(" "),
+            _c("div", { staticClass: "content" }, [
+              _vm._v(_vm._s(message.content))
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "time" }, [
+              _c("p", [_vm._v(_vm._s(message.time))])
+            ])
+          ])
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _vm._m(1)
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("聊天室")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
+    return _c("div", { staticClass: "divider" }, [
+      _c("hr", {
+        staticStyle: { "border-top": "1px dashed #987cb9" },
+        attrs: { width: "100%", color: "#987cb9", size: "1" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "footer" }, [
+      _c("div", { staticClass: "input-group" }, [
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { type: "text", placeholder: "send message" }
+        }),
+        _vm._v(" "),
         _c(
-          "div",
-          {
-            staticClass: "message",
-            staticStyle: { height: "480px", overflow: "auto" },
-            attrs: { id: "message" }
-          },
-          [
-            _c("div", { staticClass: "send" }, [
-              _c("div", { staticClass: "msg" }, [_vm._v("KarlXu：")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "msg" }, [_vm._v("你好！欢迎来到梦缘")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "time" }, [
-                _c("p", [_vm._v("05/22 06:30")])
-              ])
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "divider" }, [
-          _c("hr", {
-            staticStyle: { "border-top": "1px dashed #987cb9" },
-            attrs: { width: "100%", color: "#987cb9", size: "1" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "footer" }, [
-          _c("div", { staticClass: "input-group" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "text", placeholder: "send message" }
-            }),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-              [_vm._v("发送")]
-            )
-          ])
-        ])
+          "button",
+          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+          [_vm._v("发送")]
+        )
       ])
     ])
   }

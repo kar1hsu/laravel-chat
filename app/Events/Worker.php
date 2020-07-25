@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Services\WorkerManService;
 use GatewayWorker\Lib\Gateway;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -52,6 +53,7 @@ class Worker
 
     public static function onMessage($client_id, $message)
     {
+        (new WorkerManService())->sendMessage($client_id, $message);
         echo "onMessage\r\n";
     }
 
