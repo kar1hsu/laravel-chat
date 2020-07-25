@@ -3583,13 +3583,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log(localStorage.getItem("is_login")); //页面是否登录
@@ -94937,7 +94930,7 @@ return jQuery;
   else {}
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.43.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.43.0@webpack/buildin/global.js"), __webpack_require__(/*! ./../_webpack@4.43.0@webpack/buildin/module.js */ "./node_modules/_webpack@4.43.0@webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.44.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.44.0@webpack/buildin/global.js"), __webpack_require__(/*! ./../_webpack@4.44.0@webpack/buildin/module.js */ "./node_modules/_webpack@4.44.0@webpack/buildin/module.js")(module)))
 
 /***/ }),
 
@@ -98195,7 +98188,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../_webpack@4.43.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.43.0@webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../_webpack@4.44.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.44.0@webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -99332,7 +99325,7 @@ var index = (function () {
 
 /* harmony default export */ __webpack_exports__["default"] = (index);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.43.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.43.0@webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.44.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.44.0@webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -99530,7 +99523,7 @@ var index = (function () {
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.43.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.43.0@webpack/buildin/global.js"), __webpack_require__(/*! ./../_process@0.11.10@process/browser.js */ "./node_modules/_process@0.11.10@process/browser.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.44.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.44.0@webpack/buildin/global.js"), __webpack_require__(/*! ./../_process@0.11.10@process/browser.js */ "./node_modules/_process@0.11.10@process/browser.js")))
 
 /***/ }),
 
@@ -100266,7 +100259,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.43.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.43.0@webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../_webpack@4.44.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.44.0@webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -100324,37 +100317,46 @@ var staticRenderFns = [
       _c("div", { staticClass: "card-header" }, [_vm._v("聊天室")]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "message", attrs: { id: "message" } }, [
-          _c("div", { staticClass: "send" }, [
-            _c("div", { staticClass: "time" }, [_vm._v("05/22 06:30")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "msg" }, [
-              _c("p", [_vm._v("你好！欢迎来到梦缘")])
+        _c(
+          "div",
+          {
+            staticClass: "message",
+            staticStyle: { height: "480px", overflow: "auto" },
+            attrs: { id: "message" }
+          },
+          [
+            _c("div", { staticClass: "send" }, [
+              _c("div", { staticClass: "msg" }, [_vm._v("KarlXu：")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "msg" }, [_vm._v("你好！欢迎来到梦缘")]),
+              _vm._v(" "),
+              _c("div", { staticClass: "time" }, [
+                _c("p", [_vm._v("05/22 06:30")])
+              ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "show" }, [
-            _c("div", { staticClass: "time" }, [_vm._v("05/22 06:30")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "msg" }, [_c("p", [_vm._v("请文明发言")])])
-          ])
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "divider" }, [
+          _c("hr", {
+            staticStyle: { "border-top": "1px dashed #987cb9" },
+            attrs: { width: "100%", color: "#987cb9", size: "1" }
+          })
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "footer" }, [
-          _c("label", [
+          _c("div", { staticClass: "input-group" }, [
             _c("input", {
-              attrs: {
-                type: "file",
-                name: "img",
-                id: "sendimg",
-                hidden: "hidden"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("input", { attrs: { type: "text", id: "text" } }),
-          _vm._v(" "),
-          _c("p", [_vm._v("发送")])
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "send message" }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+              [_vm._v("发送")]
+            )
+          ])
         ])
       ])
     ])
@@ -115777,7 +115779,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.43.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.43.0@webpack/buildin/global.js"), __webpack_require__(/*! ./../../_timers-browserify@2.0.11@timers-browserify/main.js */ "./node_modules/_timers-browserify@2.0.11@timers-browserify/main.js").setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../_webpack@4.44.0@webpack/buildin/global.js */ "./node_modules/_webpack@4.44.0@webpack/buildin/global.js"), __webpack_require__(/*! ./../../_timers-browserify@2.0.11@timers-browserify/main.js */ "./node_modules/_timers-browserify@2.0.11@timers-browserify/main.js").setImmediate))
 
 /***/ }),
 
@@ -115795,7 +115797,7 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./node_modules/_webpack@4.43.0@webpack/buildin/global.js":
+/***/ "./node_modules/_webpack@4.44.0@webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
@@ -115826,7 +115828,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./node_modules/_webpack@4.43.0@webpack/buildin/module.js":
+/***/ "./node_modules/_webpack@4.44.0@webpack/buildin/module.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
   \***********************************/

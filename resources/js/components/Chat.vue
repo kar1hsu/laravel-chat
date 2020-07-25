@@ -2,26 +2,19 @@
     <div class="card">
         <div class="card-header">聊天室</div>
         <div class="card-body">
-            <div class="message" id="message">
+            <div class="message" style="height: 480px;overflow: auto;" id="message">
                 <div class="send">
-                    <div class="time">05/22 06:30</div>
-                    <div class="msg">
-                        <p>你好！欢迎来到梦缘</p>
-                    </div>
-                </div>
-                <div class="show">
-                    <div class="time">05/22 06:30</div>
-                    <div class="msg">
-                        <p>请文明发言</p>
-                    </div>
+                    <div class="msg">KarlXu：</div>
+                    <div class="msg">你好！欢迎来到梦缘</div>
+                    <div class="time"><p>05/22 06:30</p></div>
                 </div>
             </div>
+            <div class="divider"><hr style="border-top:1px dashed #987cb9;" width="100%" color="#987cb9" size=1></div>
             <div class="footer">
-                <label>
-                    <input type="file" name="img" id="sendimg" hidden="hidden"/>
-                </label>
-                <input type="text" id="text" />
-                <p>发送</p>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="send message">
+                    <button type="submit" class="btn btn-primary">发送</button>
+                </div>
             </div>
         </div>
     </div>
