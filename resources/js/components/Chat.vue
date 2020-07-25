@@ -13,7 +13,7 @@
             <div class="footer">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="send message">
-                    <button type="submit" class="btn btn-primary">发送</button>
+                    <button type="submit" class="btn btn-primary" v-on:click="sendForRoom()">发送</button>
                 </div>
             </div>
         </div>
@@ -100,6 +100,17 @@
             },
             close: function () {
                 console.log("socket已经关闭")
+            },
+            sendForRoom: function () {
+                // 发送群消息
+                this.postData = {
+                    'token' : localStorage.getItem("token"),
+                    // 'token' : 111,
+                    'type' : 'send',
+                    'send_type' : 'room',
+                    'content' : 'room',
+                };
+                this.send();
             }
         },
         destroyed () {

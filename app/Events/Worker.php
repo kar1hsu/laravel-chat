@@ -59,6 +59,7 @@ class Worker
 
     public static function onClose($client_id)
     {
+        (new WorkerManService())->closeConnect($client_id);
         echo "onClose\r\n";
     }
 }

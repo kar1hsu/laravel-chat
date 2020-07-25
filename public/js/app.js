@@ -3667,6 +3667,17 @@ __webpack_require__.r(__webpack_exports__);
     },
     close: function close() {
       console.log("socket已经关闭");
+    },
+    sendForRoom: function sendForRoom() {
+      // 发送群消息
+      this.postData = {
+        'token': localStorage.getItem("token"),
+        // 'token' : 111,
+        'type': 'send',
+        'send_type': 'room',
+        'content': 'room'
+      };
+      this.send();
     }
   },
   destroyed: function destroyed() {
@@ -100416,7 +100427,28 @@ var render = function() {
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
-      _vm._m(1)
+      _c("div", { staticClass: "footer" }, [
+        _c("div", { staticClass: "input-group" }, [
+          _c("input", {
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "send message" }
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: { type: "submit" },
+              on: {
+                click: function($event) {
+                  return _vm.sendForRoom()
+                }
+              }
+            },
+            [_vm._v("发送")]
+          )
+        ])
+      ])
     ])
   ])
 }
@@ -100430,25 +100462,6 @@ var staticRenderFns = [
         staticStyle: { "border-top": "1px dashed #987cb9" },
         attrs: { width: "100%", color: "#987cb9", size: "1" }
       })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "footer" }, [
-      _c("div", { staticClass: "input-group" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "send message" }
-        }),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-          [_vm._v("发送")]
-        )
-      ])
     ])
   }
 ]

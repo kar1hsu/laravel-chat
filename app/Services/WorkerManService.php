@@ -94,13 +94,14 @@ class WorkerManService extends BaseService
                             'type' => 'send',
                             'send_type' => 'room',
                             'from_client_id' => $client_id,
-                            'from_client_name' => $user['username'],
-                            'to_room_id' => $message_data['room_id'],
-                            'content' => "<b>say: </b>" . nl2br(htmlspecialchars($message_data['content'])),
+                            'from_client_name' => $user['name'],
+                            'to_room_id' => $this->default_room_id,
+//                            'content' => "<b>say: </b>" . nl2br(htmlspecialchars($message_data['content'])),
+                            'content' => $message_data['content'],
                             'time' => date('Y-m-d H:i:s'),
                         );
                         // 发送消息
-                        Gateway::sendToGroup($message_data['room_id'], json_encode($new_message));
+                        Gateway::sendToGroup($this->default_room_id, json_encode($new_message));
                         break;
                 }
                 break;
@@ -109,5 +110,18 @@ class WorkerManService extends BaseService
 
     public function closeConnect($client_id)
     {
+        $user = $_SESSION;
+        $new_message = array(
+            'code' => 1000,
+            'type' => 'send',
+            'send_type' => 'room',
+            'from_client_id' => $client_id,
+            'from_client_name' => '通知',
+            'to_room_id' => $this->default_room_id,
+            'content' => $user['name'].'离开了房间',
+            'time' => date('Y-m-d H:i:s'),
+        );
+        // 发送消息
+        Gateway::sendToGroup($this->default_room_id, json_encode($new_message));
     }
 }
