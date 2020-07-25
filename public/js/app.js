@@ -3789,7 +3789,9 @@ __webpack_require__.r(__webpack_exports__);
       friends: [],
       postData: {},
       messages: [],
-      sendMessage: null
+      sendMessage: null,
+      title: '聊天室',
+      friend_id: null
     };
   },
   methods: {
@@ -3812,6 +3814,12 @@ __webpack_require__.r(__webpack_exports__);
       this.socket.onmessage = this.getMessage;
     },
     open: function open() {
+      // 登录
+      this.postData = {
+        'token': localStorage.getItem("token"),
+        'type': 'login'
+      };
+      this.send();
       console.log("socket连接成功");
     },
     error: function error() {
@@ -3836,7 +3844,7 @@ __webpack_require__.r(__webpack_exports__);
           break;
 
         case "send":
-          if (data.send_type === 'room') {
+          if (data.send_type === 'friend') {
             this.messages.push({
               name: data.from_client_name,
               content: data.content,
@@ -3853,7 +3861,7 @@ __webpack_require__.r(__webpack_exports__);
     close: function close() {
       console.log("socket已经关闭");
     },
-    sendForRoom: function sendForRoom() {
+    sendForFriend: function sendForFriend() {
       var content = this.sendMessage;
 
       if (content == null) {
@@ -3867,13 +3875,14 @@ __webpack_require__.r(__webpack_exports__);
         });
         this.sendMessage = null;
         return;
-      } // 发送群消息
+      } // 发送消息
 
 
       this.postData = {
         'token': localStorage.getItem("token"),
         'type': 'send',
-        'send_type': 'room',
+        'send_type': 'friend',
+        'to_client_id': this.friend_id,
         'content': content
       };
       this.send();
@@ -3939,6 +3948,10 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function () {
         return;
       });
+    },
+    pickFriend: function pickFriend(friend_id, name) {
+      this.friend_id = friend_id;
+      this.title = '正在和 ' + name + ' 聊天';
     }
   },
   destroyed: function destroyed() {
@@ -100807,7 +100820,15 @@ var render = function() {
           _vm._l(_vm.friends, function(friend) {
             return _c(
               "li",
-              { key: friend.friend_id, staticClass: "list-group-item" },
+              {
+                key: friend.friend_id,
+                staticClass: "list-group-item",
+                on: {
+                  click: function($event) {
+                    return _vm.pickFriend(friend.friend_id, friend.name)
+                  }
+                }
+              },
               [
                 _vm._v(
                   "\n                    " +
@@ -100824,7 +100845,7 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "col-md-8" }, [
       _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [_vm._v("聊天室")]),
+        _c("div", { staticClass: "card-header" }, [_vm._v(_vm._s(_vm.title))]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c(

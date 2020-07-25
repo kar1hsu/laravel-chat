@@ -6,7 +6,7 @@
             </div>
             <div>
                 <ul class="list-group">
-                    <li class="list-group-item" v-for="friend in friends" :key="friend.friend_id">
+                    <li class="list-group-item" v-for="friend in friends" :key="friend.friend_id" v-on:click="pickFriend(friend.friend_id, friend.name)">
                         {{ friend.name }}
                     </li>
                 </ul>
@@ -14,7 +14,7 @@
         </div>
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">聊天室</div>
+                <div class="card-header">{{ title }}</div>
                 <div class="card-body">
                     <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
                         <div class="send" v-for="message in messages">
@@ -60,7 +60,9 @@
                 friends : [],
                 postData : {},
                 messages : [],
-                sendMessage : null
+                sendMessage : null,
+                title : '聊天室',
+                friend_id : null,
             }
         },
         methods: {
@@ -82,6 +84,12 @@
                 this.socket.onmessage = this.getMessage
             },
             open: function () {
+                // 登录
+                this.postData = {
+                    'token' : localStorage.getItem("token"),
+                    'type' : 'login',
+                };
+                this.send();
                 console.log("socket连接成功")
             },
             error: function () {
@@ -103,7 +111,7 @@
                     case "ping":
                         break;
                     case "send":
-                        if(data.send_type === 'room'){
+                        if(data.send_type === 'friend'){
                             this.messages.push({
                                 name: data.from_client_name,
                                 content: data.content,
@@ -120,7 +128,7 @@
             close: function () {
                 console.log("socket已经关闭")
             },
-            sendForRoom: function () {
+            sendForFriend: function () {
 
                 let content = this.sendMessage;
                 if(content == null){
@@ -134,11 +142,12 @@
                     this.sendMessage = null;
                     return;
                 }
-                // 发送群消息
+                // 发送消息
                 this.postData = {
                     'token' : localStorage.getItem("token"),
                     'type' : 'send',
-                    'send_type' : 'room',
+                    'send_type' : 'friend',
+                    'to_client_id' : this.friend_id,
                     'content' : content,
                 };
                 this.send();
@@ -193,6 +202,10 @@
                 }).catch(() => {
                     return;
                 });
+            },
+            pickFriend: function (friend_id, name) {
+                this.friend_id = friend_id;
+                this.title = '正在和 '+name+' 聊天';
             }
         },
         destroyed () {

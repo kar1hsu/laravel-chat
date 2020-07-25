@@ -21,6 +21,7 @@ class WorkerManService extends BaseService
     public function sendMessage($client_id, $message)
     {
         $message_data = json_decode($message, true);
+        Log::info($client_id, [$message_data]);
         if (!$message_data) {
             return 0;
         }
@@ -74,19 +75,21 @@ class WorkerManService extends BaseService
                             'type' => 'send',
                             'send_type' => 'friend',
                             'from_client_id' => $uuid,
-                            'from_client_name' => $user['username'],
+                            'from_client_name' => $user['name'],
                             'to_client_id' => $message_data['to_client_id'],
-                            'content' => "<b>say: </b>" . nl2br(htmlspecialchars($message_data['content'])),
+                            'content' => $message_data['content'],
                             'time' => date('Y-m-d H:i:s'),
                         );
                         // 根据to_client_id实际是用户的uuid,根据uuid去获取绑定的client_id
                         $to_client_ids = Gateway::getClientIdByUid($message_data['to_client_id']);
                         if ($to_client_ids) {
-                            foreach ($to_client_ids as $client_id) {
-                                // 发送消息
-                                Gateway::sendToClient($client_id, json_encode($new_message));
+                            foreach ($to_client_ids as $to_client_id) {
+                                // 发送消息给好友
+                                Gateway::sendToClient($to_client_id, json_encode($new_message));
                             }
                         }
+                        // todo 发送消息给自己 前端展示用
+                        Gateway::sendToClient($client_id, json_encode($new_message));
                         break;
                     case 'room': // 发送到群
                         $new_message = array(
