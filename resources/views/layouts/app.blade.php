@@ -76,6 +76,7 @@
         localStorage.removeItem('is_login');
         localStorage.removeItem('name');
         localStorage.removeItem('token');
+        window.location.href="/login";
     }
 </script>
 </html>

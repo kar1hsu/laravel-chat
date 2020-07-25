@@ -26,12 +26,10 @@
             //页面是否登录
             if (localStorage.getItem("is_login") === null) {
                 //本地存储中是否有token(uid)数据
-                this.$router.push("/login");
+                window.location.href="/login";
+                return;
             }
             this.init();
-
-            var showdiv = document.getElementById("message")
-            showdiv.scrollTop = showdiv.scrollHeight
         },
         data() {
             return{
@@ -115,7 +113,7 @@
                 };
                 this.send();
             },
-            scrollToBottom: function () {
+            scrollToMessages: function () {
                 this.$nextTick(() => {
                     let div = document.getElementById('message')
                     div.scrollTop = div.scrollHeight
@@ -127,7 +125,7 @@
             this.socket.onclose = this.close
         },
         watch: {
-            'messages': 'scrollToBottom'
+            'messages': 'scrollToMessages' //监听滚动条
         }
     }
 </script>

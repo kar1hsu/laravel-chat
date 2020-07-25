@@ -3588,12 +3588,11 @@ __webpack_require__.r(__webpack_exports__);
     //页面是否登录
     if (localStorage.getItem("is_login") === null) {
       //本地存储中是否有token(uid)数据
-      this.$router.push("/login");
+      window.location.href = "/login";
+      return;
     }
 
     this.init();
-    var showdiv = document.getElementById("message");
-    showdiv.scrollTop = showdiv.scrollHeight;
   },
   data: function data() {
     return {
@@ -3681,7 +3680,7 @@ __webpack_require__.r(__webpack_exports__);
       };
       this.send();
     },
-    scrollToBottom: function scrollToBottom() {
+    scrollToMessages: function scrollToMessages() {
       this.$nextTick(function () {
         var div = document.getElementById('message');
         div.scrollTop = div.scrollHeight;
@@ -3693,7 +3692,8 @@ __webpack_require__.r(__webpack_exports__);
     this.socket.onclose = this.close;
   },
   watch: {
-    'messages': 'scrollToBottom'
+    'messages': 'scrollToMessages' //监听滚动条
+
   }
 });
 
@@ -3782,8 +3782,7 @@ __webpack_require__.r(__webpack_exports__);
         localStorage.setItem('name', data.data.name);
         localStorage.setItem('token', data.data.token);
         console.log(response.data);
-
-        _this.$router.push('/');
+        window.location.href = "/";
       });
     }
   },

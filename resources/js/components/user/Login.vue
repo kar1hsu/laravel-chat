@@ -67,7 +67,7 @@
                     localStorage.setItem('name', data.data.name);
                     localStorage.setItem('token', data.data.token);
                     console.log(response.data)
-                    this.$router.push('/');
+                    window.location.href="/";
                 })
             }
         },
