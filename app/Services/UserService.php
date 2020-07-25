@@ -63,4 +63,13 @@ class UserService extends BaseService
     {
         return [];
     }
+
+    public function firends($request)
+    {
+        $uuid = decrypt($request->token);
+        if(!$user = User::where('uuid', $uuid)->first()){
+            throw new \Exception('用户不存在');
+        }
+
+    }
 }

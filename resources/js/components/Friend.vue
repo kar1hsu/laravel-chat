@@ -20,7 +20,7 @@
                     <div class="footer">
                         <div class="input-group">
                             <input type="text" class="form-control" v-model="sendMessage" placeholder="" @keydown.enter="sendForRoom()">
-                            <button type="submit" class="btn btn-primary" v-on:click="sendForRoom()">发送(Enter)</button>
+                            <button type="submit" class="btn btn-primary" v-on:click="sendForFriend()">发送(Enter)</button>
                         </div>
                     </div>
                 </div>
@@ -39,9 +39,15 @@
                 return;
             }
             this.init();
+            axios.get('/api/user/getFriend', {
+                token: localStorage.getItem("token")
+            }).then(response => {
+                console.log(response.data)
+            })
         },
         data() {
             return{
+                friends : [],
                 postData : {},
                 messages : [],
                 sendMessage : null
@@ -66,12 +72,6 @@
                 this.socket.onmessage = this.getMessage
             },
             open: function () {
-                // 登录
-                this.postData = {
-                    'token' : localStorage.getItem("token"),
-                    'type' : 'login',
-                };
-                this.send();
                 console.log("socket连接成功")
             },
             error: function () {

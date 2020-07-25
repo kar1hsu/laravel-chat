@@ -12,6 +12,10 @@ let routes = [
     {
         path : '/register',
         component : require('./components/user/Register').default
+    },
+    {
+        path : '/friend',
+        component : require('./components/Friend').default
     }
 ]
 
