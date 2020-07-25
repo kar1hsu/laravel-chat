@@ -36,9 +36,9 @@
                 let error_flag = 0;
                 let error_message = '';
 
-                if(this.name.length < 4 || this.name.length > 16){
+                if(this.name.length < 2 || this.name.length > 16){
                     error_flag = 1;
-                    error_message = '请输入4到16位的用户名';
+                    error_message = '请输入2到16位的用户名';
                 }else if (this.password.length < 6) {
                     error_flag = 1;
                     error_message = '请输入6位以上密码'

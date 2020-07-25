@@ -54,9 +54,9 @@
                 let error_message = '';
                 let verify = /^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/;
 
-                if(this.name.length < 4 || this.name.length > 16){
+                if(this.name.length < 2 || this.name.length > 16){
                     error_flag = 1;
-                    error_message = '请输入4到16位的用户名';
+                    error_message = '请输入2到16位的用户名';
                 }else if (!verify.test(this.email)) {
                     error_flag = 1;
                     error_message = '邮箱格式错误, 请重新输入'

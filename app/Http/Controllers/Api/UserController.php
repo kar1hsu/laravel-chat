@@ -31,12 +31,12 @@ class UserController extends Controller
     public function postRegister(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'min:4', 'max:16'],
+            'name' => ['required', 'string', 'min:2', 'max:16'],
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string', 'min:6'],
         ],[
             'name.required'        =>'请输入用户名',
-            'name.min'        =>'请输入4位数以上的用户名',
+            'name.min'        =>'请输入2位数以上的用户名',
             'name.max'        =>'用户名不可超过16位',
             'email.required'     =>'请输入邮箱地址',
             'email.email'     =>'请输入正确的邮箱地址',
@@ -68,11 +68,11 @@ class UserController extends Controller
     public function postLogin(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'min:4', 'max:16'],
+            'name' => ['required', 'string', 'min:2', 'max:16'],
             'password' => ['required', 'string', 'min:6'],
         ],[
             'name.required'        =>'请输入用户名',
-            'name.min'        =>'请输入4位数以上的用户名',
+            'name.min'        =>'请输入2位数以上的用户名',
             'name.max'        =>'用户名不可超过16位',
             'password.required'         =>'请输入密码',
             'password.min'         =>'请输入6位数以上密码',

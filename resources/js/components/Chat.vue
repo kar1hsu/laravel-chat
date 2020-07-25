@@ -9,9 +9,11 @@
                 <div class="card-body">
                     <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
                         <div class="send" v-for="message in messages">
-                            <div class="name"></div>
-                            <div class="content"><span class="label label-default">{{ message.name }}</span> ： {{ message.content }}</div>
-                            <div class="time"><p>{{ message.time }}</p></div>
+                            <div class="pull-right">
+                                <div class="name"></div>
+                                <div class="content"><span class="label label-default">{{ message.name }}</span> ： {{ message.content }}</div>
+                                <div class="time"><p>{{ message.time }}</p></div>
+                            </div>
                         </div>
                     </div>
                     <div class="divider"><hr style="border-top:1px dashed #987cb9;" width="100%" color="#987cb9" size=1></div>
@@ -43,7 +45,7 @@
                 postData : {},
                 paramCodeData : {},
                 messages : [],
-                sendMessage : ''
+                sendMessage : null
             }
         },
         methods: {
@@ -113,10 +115,19 @@
             sendForRoom: function () {
 
                 let content = this.sendMessage;
+                if(content == null){
+                    return;
+                }
+                if(content.split(" ").join("").length === 0){
+                    this.$message({
+                        type: 'warning',
+                        message: '请输入内容'
+                    });
+                    return;
+                }
                 // 发送群消息
                 this.postData = {
                     'token' : localStorage.getItem("token"),
-                    // 'token' : 111,
                     'type' : 'send',
                     'send_type' : 'room',
                     'content' : content,

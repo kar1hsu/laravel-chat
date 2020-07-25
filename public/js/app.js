@@ -3584,6 +3584,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     //页面是否登录
@@ -3600,7 +3602,7 @@ __webpack_require__.r(__webpack_exports__);
       postData: {},
       paramCodeData: {},
       messages: [],
-      sendMessage: ''
+      sendMessage: null
     };
   },
   methods: {
@@ -3672,11 +3674,23 @@ __webpack_require__.r(__webpack_exports__);
       console.log("socket已经关闭");
     },
     sendForRoom: function sendForRoom() {
-      var content = this.sendMessage; // 发送群消息
+      var content = this.sendMessage;
+
+      if (content == null) {
+        return;
+      }
+
+      if (content.split(" ").join("").length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请输入内容'
+        });
+        return;
+      } // 发送群消息
+
 
       this.postData = {
         'token': localStorage.getItem("token"),
-        // 'token' : 111,
         'type': 'send',
         'send_type': 'room',
         'content': content
@@ -3751,9 +3765,9 @@ __webpack_require__.r(__webpack_exports__);
       var error_flag = 0;
       var error_message = '';
 
-      if (this.name.length < 4 || this.name.length > 16) {
+      if (this.name.length < 2 || this.name.length > 16) {
         error_flag = 1;
-        error_message = '请输入4到16位的用户名';
+        error_message = '请输入2到16位的用户名';
       } else if (this.password.length < 6) {
         error_flag = 1;
         error_message = '请输入6位以上密码';
@@ -3866,9 +3880,9 @@ __webpack_require__.r(__webpack_exports__);
       var error_message = '';
       var verify = /^\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/;
 
-      if (this.name.length < 4 || this.name.length > 16) {
+      if (this.name.length < 2 || this.name.length > 16) {
         error_flag = 1;
-        error_message = '请输入4到16位的用户名';
+        error_message = '请输入2到16位的用户名';
       } else if (!verify.test(this.email)) {
         error_flag = 1;
         error_message = '邮箱格式错误, 请重新输入';
@@ -100425,17 +100439,19 @@ var render = function() {
             },
             _vm._l(_vm.messages, function(message) {
               return _c("div", { staticClass: "send" }, [
-                _c("div", { staticClass: "name" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "content" }, [
-                  _c("span", { staticClass: "label label-default" }, [
-                    _vm._v(_vm._s(message.name))
+                _c("div", { staticClass: "pull-right" }, [
+                  _c("div", { staticClass: "name" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "content" }, [
+                    _c("span", { staticClass: "label label-default" }, [
+                      _vm._v(_vm._s(message.name))
+                    ]),
+                    _vm._v(" ： " + _vm._s(message.content))
                   ]),
-                  _vm._v(" ： " + _vm._s(message.content))
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "time" }, [
-                  _c("p", [_vm._v(_vm._s(message.time))])
+                  _vm._v(" "),
+                  _c("div", { staticClass: "time" }, [
+                    _c("p", [_vm._v(_vm._s(message.time))])
+                  ])
                 ])
               ])
             }),
