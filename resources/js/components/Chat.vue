@@ -19,8 +19,8 @@
                     <div class="divider"><hr style="border-top:1px dashed #987cb9;" width="100%" color="#987cb9" size=1></div>
                     <div class="footer">
                         <div class="input-group">
-                            <input type="text" class="form-control" v-model="sendMessage" placeholder="send message">
-                            <button type="submit" class="btn btn-primary" v-on:click="sendForRoom()">发送</button>
+                            <input type="text" class="form-control" v-model="sendMessage" placeholder="" @keydown.enter="sendForRoom()">
+                            <button type="submit" class="btn btn-primary" v-on:click="sendForRoom()">发送(Enter)</button>
                         </div>
                     </div>
                 </div>

@@ -100473,9 +100473,18 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "text", placeholder: "send message" },
+                attrs: { type: "text", placeholder: "" },
                 domProps: { value: _vm.sendMessage },
                 on: {
+                  keydown: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
+                    }
+                    return _vm.sendForRoom()
+                  },
                   input: function($event) {
                     if ($event.target.composing) {
                       return
@@ -100496,7 +100505,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("发送")]
+                [_vm._v("发送(Enter)")]
               )
             ])
           ])
