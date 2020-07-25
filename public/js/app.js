@@ -3647,6 +3647,9 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       switch (data.type) {
+        case "ping":
+          break;
+
         case "send":
           if (data.send_type === 'room') {
             this.messages.push({
