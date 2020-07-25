@@ -6,7 +6,7 @@
             </div>
             <div>
                 <ul class="list-group">
-                    <li class="list-group-item" v-for="friend in friends" :key="friend.friend_id" v-on:click="pickFriend(friend.friend_id, friend.name)">
+                    <li class="list-group-item" v-for="friend in friends" :key="friend.friend_user_id" v-on:click="pickFriend(friend.friend_user_id, friend.name)">
                         {{ friend.name }}
                     </li>
                 </ul>
@@ -17,9 +17,8 @@
                 <div class="card-header">{{ title }}</div>
                 <div class="card-body">
                     <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
-                        <div class="send" v-for="message in messages">
-                            <div class="pull-right">
-                                <div class="name"></div>
+                        <div style="overflow:hidden;" v-for="message in messages">
+                            <div :class="message.user_id === uuid ? 'float-right' : ''">
                                 <div class="content">{{ message.name }} ： {{ message.content }}</div>
                                 <div class="time"><p>{{ message.time }}</p></div>
                             </div>
@@ -54,6 +53,9 @@
                 console.log(response.data)
                 this.friends = response.data.data;
             })
+            this.uuid = localStorage.getItem("uuid")
+            this.token = localStorage.getItem("token")
+
         },
         data() {
             return{
@@ -62,7 +64,9 @@
                 messages : [],
                 sendMessage : null,
                 title : '聊天室',
-                friend_id : null,
+                friend_user_id : null,
+                token : null,
+                uuid : null
             }
         },
         methods: {
@@ -86,7 +90,7 @@
             open: function () {
                 // 登录
                 this.postData = {
-                    'token' : localStorage.getItem("token"),
+                    'token' : this.token,
                     'type' : 'login',
                 };
                 this.send();
@@ -113,7 +117,8 @@
                     case "send":
                         if(data.send_type === 'friend'){
                             this.messages.push({
-                                name: data.from_client_name,
+                                name: data.from_user_name,
+                                user_id: data.from_user_id,
                                 content: data.content,
                                 time: data.time,
                             });
@@ -144,10 +149,10 @@
                 }
                 // 发送消息
                 this.postData = {
-                    'token' : localStorage.getItem("token"),
+                    'token' : this.token,
                     'type' : 'send',
                     'send_type' : 'friend',
-                    'to_client_id' : this.friend_id,
+                    'friend_user_id' : this.friend_user_id,
                     'content' : content,
                 };
                 this.send();
@@ -180,7 +185,7 @@
                         return;
                     }
                     axios.post('/api/user/addFriend', {
-                        token : localStorage.getItem("token"),
+                        token : this.token,
                         name: value
                     }).then(response => {
                         console.log(response.data)
@@ -192,7 +197,7 @@
                         }
                         this.friends.push({
                             name: response.data.data.name,
-                            friend_id: response.data.data.friend_id,
+                            friend_user_id: response.data.data.friend_user_id,
                         });
                         this.$message({
                             type: 'success',
@@ -200,11 +205,11 @@
                         });
                     })
                 }).catch(() => {
-                    return;
+
                 });
             },
-            pickFriend: function (friend_id, name) {
-                this.friend_id = friend_id;
+            pickFriend: function (friend_user_id, name) {
+                this.friend_user_id = friend_user_id;
                 this.title = '正在和 '+name+' 聊天';
             }
         },

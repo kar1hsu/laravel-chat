@@ -55,8 +55,8 @@ class WorkerManService extends BaseService
                     'code' => 1000,
                     'type' => 'send',
                     'send_type' => 'room',
-                    'from_client_id' => 'worker',
-                    'from_client_name' => '通知',
+                    'from_user_id' => 'worker',
+                    'from_user_name' => '通知',
                     'to_room_id' => $this->default_room_id,
                     'content' => $user['name'] ."加入房间",
                     'time' => date('Y-m-d H:i:s'),
@@ -73,14 +73,14 @@ class WorkerManService extends BaseService
                             'code' => 1000,
                             'type' => 'send',
                             'send_type' => 'friend',
-                            'from_client_id' => $uuid,
-                            'from_client_name' => $user['name'],
-                            'to_client_id' => $message_data['to_client_id'],
+                            'from_user_id' => $uuid,
+                            'from_user_name' => $user['name'],
+                            'to_friend_user_id' => $message_data['friend_user_id'],
                             'content' => $message_data['content'],
                             'time' => date('Y-m-d H:i:s'),
                         );
                         // 根据to_client_id实际是用户的uuid,根据uuid去获取绑定的client_id
-                        $to_client_ids = Gateway::getClientIdByUid($message_data['to_client_id']);
+                        $to_client_ids = Gateway::getClientIdByUid($message_data['friend_user_id']);
                         if ($to_client_ids) {
                             foreach ($to_client_ids as $to_client_id) {
                                 // 发送消息给好友
@@ -95,8 +95,8 @@ class WorkerManService extends BaseService
                             'code' => 1000,
                             'type' => 'send',
                             'send_type' => 'room',
-                            'from_client_id' => $client_id,
-                            'from_client_name' => $user['name'],
+                            'from_user_id' => $uuid,
+                            'from_user_name' => $user['name'],
                             'to_room_id' => $this->default_room_id,
 //                            'content' => "<b>say: </b>" . nl2br(htmlspecialchars($message_data['content'])),
                             'content' => $message_data['content'],
@@ -117,8 +117,8 @@ class WorkerManService extends BaseService
             'code' => 1000,
             'type' => 'send',
             'send_type' => 'room',
-            'from_client_id' => $client_id,
-            'from_client_name' => '通知',
+            'from_user_id' => $client_id,
+            'from_user_name' => '通知',
             'to_room_id' => $this->default_room_id,
             'content' => $user['name'].'离开了房间',
             'time' => date('Y-m-d H:i:s'),

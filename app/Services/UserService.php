@@ -57,6 +57,7 @@ class UserService extends BaseService
         return [
             'token' => encrypt($user->uuid),
             'name' => $user->name,
+            'uuid' => $user->uuid
         ];
     }
 
@@ -73,7 +74,7 @@ class UserService extends BaseService
         }
         $friends = Friend::where('friends.uid', $user['id'])
             ->leftJoin('users', 'users.id', '=', 'friends.fid')
-            ->get(['users.name', 'users.uuid as friend_id']);
+            ->get(['users.name', 'users.uuid as friend_user_id']);
 
         return $friends;
 

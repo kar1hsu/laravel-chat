@@ -8,9 +8,8 @@
                 <div class="card-header">聊天室</div>
                 <div class="card-body">
                     <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
-                        <div class="send" v-for="message in messages">
-                            <div class="pull-right">
-                                <div class="name"></div>
+                        <div style="overflow:hidden;" v-for="message in messages">
+                            <div :class="message.user_id === uuid ? 'float-right' : ''">
                                 <div class="content">{{ message.name }} ： {{ message.content }}</div>
                                 <div class="time"><p>{{ message.time }}</p></div>
                             </div>
@@ -38,13 +37,17 @@
                 window.location.href="/login";
                 return;
             }
+            this.uuid = localStorage.getItem("uuid")
+            this.token = localStorage.getItem("token")
             this.init();
         },
         data() {
             return{
                 postData : {},
                 messages : [],
-                sendMessage : null
+                sendMessage : null,
+                token : null,
+                uuid : null
             }
         },
         methods: {
@@ -68,7 +71,7 @@
             open: function () {
                 // 登录
                 this.postData = {
-                    'token' : localStorage.getItem("token"),
+                    'token' : this.token,
                     'type' : 'login',
                 };
                 this.send();
@@ -95,7 +98,8 @@
                     case "send":
                         if(data.send_type === 'room'){
                             this.messages.push({
-                                name: data.from_client_name,
+                                name: data.from_user_name,
+                                user_id: data.from_user_id,
                                 content: data.content,
                                 time: data.time,
                             });
@@ -126,7 +130,7 @@
                 }
                 // 发送群消息
                 this.postData = {
-                    'token' : localStorage.getItem("token"),
+                    'token' : this.token,
                     'type' : 'send',
                     'send_type' : 'room',
                     'content' : content,

@@ -3585,7 +3585,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     //页面是否登录
@@ -3595,13 +3594,17 @@ __webpack_require__.r(__webpack_exports__);
       return;
     }
 
+    this.uuid = localStorage.getItem("uuid");
+    this.token = localStorage.getItem("token");
     this.init();
   },
   data: function data() {
     return {
       postData: {},
       messages: [],
-      sendMessage: null
+      sendMessage: null,
+      token: null,
+      uuid: null
     };
   },
   methods: {
@@ -3626,7 +3629,7 @@ __webpack_require__.r(__webpack_exports__);
     open: function open() {
       // 登录
       this.postData = {
-        'token': localStorage.getItem("token"),
+        'token': this.token,
         'type': 'login'
       };
       this.send();
@@ -3656,7 +3659,8 @@ __webpack_require__.r(__webpack_exports__);
         case "send":
           if (data.send_type === 'room') {
             this.messages.push({
-              name: data.from_client_name,
+              name: data.from_user_name,
+              user_id: data.from_user_id,
               content: data.content,
               time: data.time
             });
@@ -3689,7 +3693,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
       this.postData = {
-        'token': localStorage.getItem("token"),
+        'token': this.token,
         'type': 'send',
         'send_type': 'room',
         'content': content
@@ -3764,7 +3768,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -3783,6 +3786,8 @@ __webpack_require__.r(__webpack_exports__);
       console.log(response.data);
       _this.friends = response.data.data;
     });
+    this.uuid = localStorage.getItem("uuid");
+    this.token = localStorage.getItem("token");
   },
   data: function data() {
     return {
@@ -3791,7 +3796,9 @@ __webpack_require__.r(__webpack_exports__);
       messages: [],
       sendMessage: null,
       title: '聊天室',
-      friend_id: null
+      friend_user_id: null,
+      token: null,
+      uuid: null
     };
   },
   methods: {
@@ -3816,7 +3823,7 @@ __webpack_require__.r(__webpack_exports__);
     open: function open() {
       // 登录
       this.postData = {
-        'token': localStorage.getItem("token"),
+        'token': this.token,
         'type': 'login'
       };
       this.send();
@@ -3846,7 +3853,8 @@ __webpack_require__.r(__webpack_exports__);
         case "send":
           if (data.send_type === 'friend') {
             this.messages.push({
-              name: data.from_client_name,
+              name: data.from_user_name,
+              user_id: data.from_user_id,
               content: data.content,
               time: data.time
             });
@@ -3879,10 +3887,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
       this.postData = {
-        'token': localStorage.getItem("token"),
+        'token': this.token,
         'type': 'send',
         'send_type': 'friend',
-        'to_client_id': this.friend_id,
+        'friend_user_id': this.friend_user_id,
         'content': content
       };
       this.send();
@@ -3923,7 +3931,7 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         axios.post('/api/user/addFriend', {
-          token: localStorage.getItem("token"),
+          token: _this2.token,
           name: value
         }).then(function (response) {
           console.log(response.data);
@@ -3937,7 +3945,7 @@ __webpack_require__.r(__webpack_exports__);
 
           _this2.friends.push({
             name: response.data.data.name,
-            friend_id: response.data.data.friend_id
+            friend_user_id: response.data.data.friend_user_id
           });
 
           _this2.$message({
@@ -3945,12 +3953,10 @@ __webpack_require__.r(__webpack_exports__);
             message: '添加成功'
           });
         });
-      })["catch"](function () {
-        return;
-      });
+      })["catch"](function () {});
     },
-    pickFriend: function pickFriend(friend_id, name) {
-      this.friend_id = friend_id;
+    pickFriend: function pickFriend(friend_user_id, name) {
+      this.friend_user_id = friend_user_id;
       this.title = '正在和 ' + name + ' 聊天';
     }
   },
@@ -4048,6 +4054,7 @@ __webpack_require__.r(__webpack_exports__);
         localStorage.setItem('is_login', 1);
         localStorage.setItem('name', data.data.name);
         localStorage.setItem('token', data.data.token);
+        localStorage.setItem('uuid', data.data.uuid);
         console.log(response.data);
         window.location.href = "/";
       });
@@ -100687,20 +100694,22 @@ var render = function() {
               attrs: { id: "message" }
             },
             _vm._l(_vm.messages, function(message) {
-              return _c("div", { staticClass: "send" }, [
-                _c("div", { staticClass: "pull-right" }, [
-                  _c("div", { staticClass: "name" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "content" }, [
-                    _vm._v(
-                      _vm._s(message.name) + " ： " + _vm._s(message.content)
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "time" }, [
-                    _c("p", [_vm._v(_vm._s(message.time))])
-                  ])
-                ])
+              return _c("div", { staticStyle: { overflow: "hidden" } }, [
+                _c(
+                  "div",
+                  { class: message.user_id === _vm.uuid ? "float-right" : "" },
+                  [
+                    _c("div", { staticClass: "content" }, [
+                      _vm._v(
+                        _vm._s(message.name) + " ： " + _vm._s(message.content)
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "time" }, [
+                      _c("p", [_vm._v(_vm._s(message.time))])
+                    ])
+                  ]
+                )
               ])
             }),
             0
@@ -100821,11 +100830,11 @@ var render = function() {
             return _c(
               "li",
               {
-                key: friend.friend_id,
+                key: friend.friend_user_id,
                 staticClass: "list-group-item",
                 on: {
                   click: function($event) {
-                    return _vm.pickFriend(friend.friend_id, friend.name)
+                    return _vm.pickFriend(friend.friend_user_id, friend.name)
                   }
                 }
               },
@@ -100856,20 +100865,22 @@ var render = function() {
               attrs: { id: "message" }
             },
             _vm._l(_vm.messages, function(message) {
-              return _c("div", { staticClass: "send" }, [
-                _c("div", { staticClass: "pull-right" }, [
-                  _c("div", { staticClass: "name" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "content" }, [
-                    _vm._v(
-                      _vm._s(message.name) + " ： " + _vm._s(message.content)
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "time" }, [
-                    _c("p", [_vm._v(_vm._s(message.time))])
-                  ])
-                ])
+              return _c("div", { staticStyle: { overflow: "hidden" } }, [
+                _c(
+                  "div",
+                  { class: message.user_id === _vm.uuid ? "float-right" : "" },
+                  [
+                    _c("div", { staticClass: "content" }, [
+                      _vm._v(
+                        _vm._s(message.name) + " ： " + _vm._s(message.content)
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "time" }, [
+                      _c("p", [_vm._v(_vm._s(message.time))])
+                    ])
+                  ]
+                )
               ])
             }),
             0
