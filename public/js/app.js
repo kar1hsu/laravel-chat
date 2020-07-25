@@ -3683,8 +3683,9 @@ __webpack_require__.r(__webpack_exports__);
       if (content.split(" ").join("").length === 0) {
         this.$message({
           type: 'warning',
-          message: '请输入内容'
+          message: '不能发送空白信息'
         });
+        this.sendMessage = null;
         return;
       } // 发送群消息
 
@@ -3696,7 +3697,7 @@ __webpack_require__.r(__webpack_exports__);
         'content': content
       };
       this.send();
-      this.sendMessage = '';
+      this.sendMessage = null;
     },
     scrollToMessages: function scrollToMessages() {
       this.$nextTick(function () {
