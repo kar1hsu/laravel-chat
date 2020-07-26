@@ -2,23 +2,27 @@
     <div class="row">
         <div class="col-md-2">
             <div class="card-header">好友列表
-            <button class="float-right btn btn-info" v-on:click="addFriend()">添加好友</button>
+                <button class="float-right btn btn-info" v-on:click="addFriend()">添加好友</button>
             </div>
             <div>
                 <ul class="list-group">
                     <li class="list-group-item" v-for="friend in friends" :key="friend.friend_user_id" v-on:click="pickFriend(friend.friend_user_id, friend.name)">
-                        {{ friend.name }}
+                        {{ friend.name }}<span class="float-right"></span>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ title }}</div>
+            <div class="card" v-for="room in rooms" :key="room.friend_user_id" v-if="friend_user_id === room.friend_user_id">
+                <div class="card-header">{{ room.title }}</div>
                 <div class="card-body">
                     <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
                         <div style="overflow:hidden;" v-for="message in messages">
-                            <div :class="message.user_id === uuid ? 'float-right' : ''">
+                            <div :class="message.user_id === uuid ? 'float-right' : ''" v-if="friend_user_id === message.user_id">
+                                <div class="content">{{ message.name }} ： {{ message.content }}</div>
+                                <div class="time"><p>{{ message.time }}</p></div>
+                            </div>
+                            <div :class="message.user_id === uuid ? 'float-right' : ''" v-else-if="uuid === message.user_id && friend_user_id === message.friend_id">
                                 <div class="content">{{ message.name }} ： {{ message.content }}</div>
                                 <div class="time"><p>{{ message.time }}</p></div>
                             </div>
@@ -27,7 +31,7 @@
                     <div class="divider"><hr style="border-top:1px dashed #987cb9;" width="100%" color="#987cb9" size=1></div>
                     <div class="footer">
                         <div class="input-group">
-                            <input type="text" class="form-control" v-model="sendMessage" placeholder="" @keydown.enter="sendForRoom()">
+                            <input type="text" class="form-control" v-model="sendMessage" placeholder="" @keydown.enter="sendForFriend()">
                             <button type="submit" class="btn btn-primary" v-on:click="sendForFriend()">发送(Enter)</button>
                         </div>
                     </div>
@@ -52,6 +56,9 @@
             }).then(response => {
                 console.log(response.data)
                 this.friends = response.data.data;
+                if(this.friends !== null){
+                    this.pickFriend(this.friends[0].friend_user_id, this.friends[0].name)
+                }
             })
             this.uuid = localStorage.getItem("uuid")
             this.token = localStorage.getItem("token")
@@ -63,10 +70,10 @@
                 postData : {},
                 messages : [],
                 sendMessage : null,
-                title : '聊天室',
                 friend_user_id : null,
                 token : null,
-                uuid : null
+                uuid : null,
+                rooms : [],
             }
         },
         methods: {
@@ -119,6 +126,7 @@
                             this.messages.push({
                                 name: data.from_user_name,
                                 user_id: data.from_user_id,
+                                friend_id: data.to_friend_user_id,
                                 content: data.content,
                                 time: data.time,
                             });
@@ -210,7 +218,18 @@
             },
             pickFriend: function (friend_user_id, name) {
                 this.friend_user_id = friend_user_id;
-                this.title = '正在和 '+name+' 聊天';
+                let flag = false;
+                this.rooms.find(function(value) {
+                    if(value.friend_user_id === friend_user_id) {
+                        flag = true;
+                    }
+                })
+                if(flag === false){
+                    this.rooms.push({
+                        'title' : '正在和 '+name+' 聊天',
+                        'friend_user_id' : friend_user_id,
+                    });
+                }
             }
         },
         destroyed () {
@@ -218,11 +237,38 @@
             this.socket.onclose = this.close
         },
         watch: {
-            'messages': 'scrollToMessages' //监听滚动条
+            'messages': 'scrollToMessages', //监听滚动条
+            'friend_user_id': 'scrollToMessages' //监听滚动条
         }
     }
 </script>
 
 <style scoped>
+    .pre-scrollable{
+        overflow:hidden;
+    }
+    .pre-scrollable{
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 100%;
+    }
+    /*滚动条样式*/
+    .pre-scrollable::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 4px;
 
+    }
+    .pre-scrollable::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 5px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: rgba(0,0,0,0.2);
+    }
+    .pre-scrollable::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 0;
+        background: rgba(0,0,0,0.1);
+    }
+    .float-right{
+        margin-right: 20px;
+    }
 </style>
