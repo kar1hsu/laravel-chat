@@ -237,7 +237,8 @@
             this.socket.onclose = this.close
         },
         watch: {
-            'messages': 'scrollToMessages' //监听滚动条
+            'messages': 'scrollToMessages', //监听滚动条
+            'friend_user_id': 'scrollToMessages' //监听滚动条
         }
     }
 </script>
