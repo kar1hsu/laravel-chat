@@ -99,8 +99,9 @@
                     localStorage.setItem('is_login', 1);
                     localStorage.setItem('name', data.data.name);
                     localStorage.setItem('token', data.data.token);
+                    localStorage.setItem('uuid', data.data.uuid);
                     console.log(response.data)
-                    this.$router.push('/');
+                    window.location.href="/";
                 })
             }
         },

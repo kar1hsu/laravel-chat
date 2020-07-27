@@ -36,6 +36,7 @@ class UserService extends BaseService
         return [
             'token' => encrypt($uuid),
             'name' => $request->name,
+            'uuid' => $uuid,
         ];
     }
 

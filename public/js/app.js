@@ -3618,7 +3618,7 @@ __webpack_require__.r(__webpack_exports__);
       } // 实例化socket
 
 
-      this.socket = new WebSocket('ws://127.0.0.1:8080'); // 监听socket连接
+      this.socket = new WebSocket('ws://192.168.1.180:8080'); // 监听socket连接
 
       this.socket.onopen = this.open; // 监听socket错误信息
 
@@ -3820,7 +3820,7 @@ __webpack_require__.r(__webpack_exports__);
       } // 实例化socket
 
 
-      this.socket = new WebSocket('ws://127.0.0.1:8080'); // 监听socket连接
+      this.socket = new WebSocket('ws://192.168.1.180:8080'); // 监听socket连接
 
       this.socket.onopen = this.open; // 监听socket错误信息
 
@@ -3950,6 +3950,8 @@ __webpack_require__.r(__webpack_exports__);
               type: 'warning',
               message: response.data.message
             });
+
+            return;
           }
 
           _this2.friends.push({
@@ -4488,9 +4490,9 @@ __webpack_require__.r(__webpack_exports__);
         localStorage.setItem('is_login', 1);
         localStorage.setItem('name', data.data.name);
         localStorage.setItem('token', data.data.token);
+        localStorage.setItem('uuid', data.data.uuid);
         console.log(response.data);
-
-        _this.$router.push('/');
+        window.location.href = "/";
       });
     }
   },
