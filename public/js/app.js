@@ -3790,7 +3790,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log(response.data);
       _this.friends = response.data.data;
 
-      if (_this.friends !== null) {
+      if (JSON.stringify(_this.friends) !== "{}") {
         _this.pickFriend(_this.friends[0].friend_user_id, _this.friends[0].name);
       }
     });

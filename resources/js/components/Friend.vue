@@ -56,7 +56,7 @@
             }).then(response => {
                 console.log(response.data)
                 this.friends = response.data.data;
-                if(this.friends !== null){
+                if(JSON.stringify(this.friends ) !== "{}"){
                     this.pickFriend(this.friends[0].friend_user_id, this.friends[0].name)
                 }
             })
