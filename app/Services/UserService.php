@@ -81,7 +81,7 @@ class UserService extends BaseService
 
     }
 
-    public function addFirend($request)
+    public function addFriend($request)
     {
         $uuid = decrypt($request->token);
         if(!$user = User::where('uuid', $uuid)->first()){
@@ -109,7 +109,7 @@ class UserService extends BaseService
 
         return [
             'name' => $firend['name'],
-            'friend_id' => $firend['uuid']
+            'friend_user_id' => $firend['uuid']
         ];
     }
 }

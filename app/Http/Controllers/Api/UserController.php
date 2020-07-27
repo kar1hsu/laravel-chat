@@ -137,7 +137,7 @@ class UserController extends Controller
     public function addFriend(Request $request)
     {
         try {
-            $data = $this->UserService->addFirend($request);
+            $data = $this->UserService->addFriend($request);
             $this->rets['data'] = $data;
         }catch (\Exception $exception){
             $this->rets['code'] = 1001;

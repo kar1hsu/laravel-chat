@@ -16,10 +16,6 @@ let routes = [
     {
         path : '/friend',
         component : require('./components/Friend').default
-    },
-    {
-        path : '/test',
-        component : require('./components/Test').default
     }
 ]
 
