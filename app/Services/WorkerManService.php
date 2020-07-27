@@ -90,6 +90,25 @@ class WorkerManService extends BaseService
                         // todo 发送消息给自己 前端展示用
                         Gateway::sendToClient($client_id, json_encode($new_message));
                         break;
+                    case 'add_friend': // 新增好友
+                        $new_message = array(
+                            'code' => 1000,
+                            'type' => 'send',
+                            'send_type' => 'add_friend',
+                            'from_user_id' => $uuid,
+                            'from_user_name' => $user['name'],
+                            'to_friend_user_id' => $message_data['friend_user_id'],
+                            'time' => date('Y-m-d H:i:s'),
+                        );
+                        // 根据to_client_id实际是用户的uuid,根据uuid去获取绑定的client_id
+                        $to_client_ids = Gateway::getClientIdByUid($message_data['friend_user_id']);
+                        if ($to_client_ids) {
+                            foreach ($to_client_ids as $to_client_id) {
+                                // 发送消息给好友
+                                Gateway::sendToClient($to_client_id, json_encode($new_message));
+                            }
+                        }
+                        break;
                     case 'room': // 发送到群
                         $new_message = array(
                             'code' => 1000,

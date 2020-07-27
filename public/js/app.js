@@ -3790,7 +3790,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log(response.data);
       _this.friends = response.data.data;
 
-      if (JSON.stringify(_this.friends) !== "{}") {
+      if (_this.friends !== undefined && _this.friends.length > 0) {
         _this.pickFriend(_this.friends[0].friend_user_id, _this.friends[0].name);
       }
     });
@@ -3867,6 +3867,12 @@ __webpack_require__.r(__webpack_exports__);
               content: data.content,
               time: data.time
             });
+          } else if (data.send_type === 'add_friend') {
+            this.friends.push({
+              name: data.from_user_name,
+              user_id: data.from_user_id
+            });
+            this.pickFriend(data.from_user_id, data.from_user_name);
           }
 
           break;
@@ -3944,20 +3950,31 @@ __webpack_require__.r(__webpack_exports__);
           name: value
         }).then(function (response) {
           console.log(response.data);
+          var data = response.data;
 
-          if (response.data.code !== 1000) {
+          if (data.code !== 1000) {
             _this2.$message({
               type: 'warning',
-              message: response.data.message
+              message: data.message
             });
 
             return;
           }
 
           _this2.friends.push({
-            name: response.data.data.name,
-            friend_user_id: response.data.data.friend_user_id
-          });
+            name: data.data.name,
+            friend_user_id: data.data.friend_user_id
+          }); // 发送消息
+
+
+          _this2.postData = {
+            'token': _this2.token,
+            'type': 'send',
+            'send_type': 'add_friend',
+            'friend_user_id': data.data.friend_user_id
+          };
+
+          _this2.send();
 
           _this2.$message({
             type: 'success',

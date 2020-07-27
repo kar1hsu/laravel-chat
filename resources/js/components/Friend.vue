@@ -56,7 +56,7 @@
             }).then(response => {
                 console.log(response.data)
                 this.friends = response.data.data;
-                if(JSON.stringify(this.friends ) !== "{}"){
+                if( this.friends !==undefined && this.friends.length > 0 ){
                     this.pickFriend(this.friends[0].friend_user_id, this.friends[0].name)
                 }
             })
@@ -130,6 +130,12 @@
                                 content: data.content,
                                 time: data.time,
                             });
+                        }else if(data.send_type === 'add_friend'){
+                            this.friends.push({
+                                name: data.from_user_name,
+                                user_id: data.from_user_id,
+                            });
+                            this.pickFriend(data.from_user_id, data.from_user_name)
                         }
                         break;
                 }
@@ -197,17 +203,26 @@
                         name: value
                     }).then(response => {
                         console.log(response.data)
-                        if(response.data.code !== 1000){
+                        let data = response.data;
+                        if(data.code !== 1000){
                             this.$message({
                                 type: 'warning',
-                                message: response.data.message
+                                message: data.message
                             });
                             return;
                         }
                         this.friends.push({
-                            name: response.data.data.name,
-                            friend_user_id: response.data.data.friend_user_id,
+                            name: data.data.name,
+                            friend_user_id: data.data.friend_user_id,
                         });
+                        // 发送消息
+                        this.postData = {
+                            'token': this.token,
+                            'type': 'send',
+                            'send_type': 'add_friend',
+                            'friend_user_id': data.data.friend_user_id,
+                        };
+                        this.send();
                         this.$message({
                             type: 'success',
                             message: '添加成功'
