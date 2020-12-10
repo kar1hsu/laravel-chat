@@ -18,12 +18,18 @@ class WorkerManService extends BaseService
 
     }
 
+    /**
+     * 接受信息并做处理
+     * @param $client_id
+     * @param $message
+     * @return bool
+     */
     public function sendMessage($client_id, $message)
     {
         $message_data = json_decode($message, true);
         Log::info($client_id, [$message_data]);
         if (!$message_data) {
-            return 0;
+            return false;
         }
         // uuid加密后生成的token
         $token = $message_data['token'];
@@ -32,7 +38,7 @@ class WorkerManService extends BaseService
             $uuid = decrypt($token);
             $user = User::where('uuid', $uuid)->first();
             if(!$user){
-                throw new \Exception('1');
+                throw new \Exception('un login');
             }
             $user = $user->toArray();
         } catch (\Exception $exception) {
@@ -41,7 +47,7 @@ class WorkerManService extends BaseService
             // 提示用户登录并关闭当前链接
             Gateway::sendToClient($client_id, json_encode($return));
             Gateway::closeClient($client_id);
-            return 0;
+            return false;
         }
 
         switch ($message_data['type']) {
@@ -127,8 +133,14 @@ class WorkerManService extends BaseService
                 }
                 break;
         }
+        return false;
     }
 
+
+    /**
+     * 关闭连接
+     * @param $client_id
+     */
     public function closeConnect($client_id)
     {
         $user = $_SESSION;
