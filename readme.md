@@ -6,6 +6,8 @@ laravel 整合 workerman 实现聊天室功能，支持增加好友，项目主�
 
 php 版本 >= 7.2
 
+mysql 版本 >= 5.7
+
 代码拉取下来后，先执行 `composer update` 安装好依赖包，前端使用 vue 如果需要修改页面请自行安装开发环境
 
 执行 `php artisan migrate` 创建sql
