@@ -86,7 +86,7 @@
                     return;
                 }
                 // 实例化socket
-                this.socket = new WebSocket('ws://192.168.1.180:8080')
+                this.socket = new WebSocket('ws://127.0.0.1:8080')
                 // 监听socket连接
                 this.socket.onopen = this.open
                 // 监听socket错误信息

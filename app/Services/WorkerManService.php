@@ -43,7 +43,7 @@ class WorkerManService extends BaseService
             $user = $user->toArray();
         } catch (\Exception $exception) {
             $return['code'] = 9999;
-            $return['message'] = 'un login';
+            $return['message'] = $exception->getMessage();
             // 提示用户登录并关闭当前链接
             Gateway::sendToClient($client_id, json_encode($return));
             Gateway::closeClient($client_id);
