@@ -7,7 +7,9 @@
             <div>
                 <ul class="list-group">
                     <li class="list-group-item" v-for="friend in friends" :key="friend.friend_user_id" v-on:click="pickFriend(friend.friend_user_id, friend.name)">
-                        {{ friend.name }}<span class="float-right"></span>
+                        <el-badge :value="friend.msg_count" :max="99" class="item">
+                            <el-button size="small">{{ friend.name }}</el-button>
+                        </el-badge>
                     </li>
                 </ul>
             </div>
@@ -40,7 +42,6 @@
         </div>
     </div>
 </template>
-
 <script>
     export default {
         mounted() {
@@ -130,10 +131,17 @@
                                 content: data.content,
                                 time: data.time,
                             });
+
+                            if (this.friend_user_id != data.from_user_id && this.uuid != data.from_user_id) {
+                                let index_f = this.friends.findIndex((value) => value.friend_user_id == data.from_user_id)
+                                this.friends[index_f].msg_count += 1
+                            }
+
                         }else if(data.send_type === 'add_friend'){
                             this.friends.push({
                                 name: data.from_user_name,
                                 user_id: data.from_user_id,
+                                msg_count: 0,
                             });
                             this.pickFriend(data.from_user_id, data.from_user_name)
                         }
@@ -179,7 +187,7 @@
                 })
             },
             addFriend: function () {
-                this.$messageBox.alert('请输入好友用户名', '提示', {
+                this.$alert('请输入好友用户名', '提示', {
                     showInput: true,
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -234,6 +242,8 @@
             },
             pickFriend: function (friend_user_id, name) {
                 this.friend_user_id = friend_user_id;
+                let index_f = this.friends.findIndex((value) => value.friend_user_id == friend_user_id)
+                this.friends[index_f].msg_count = null
                 let flag = false;
                 this.rooms.find(function(value) {
                     if(value.friend_user_id === friend_user_id) {

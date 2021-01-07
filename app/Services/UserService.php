@@ -88,7 +88,10 @@ class UserService extends BaseService
         }
         return Friend::where('friends.uid', $user['id'])
             ->leftJoin('users', 'users.id', '=', 'friends.fid')
-            ->get(['users.name', 'users.uuid as friend_user_id']);
+            ->get(['users.name', 'users.uuid as friend_user_id'])
+            ->each(function ($item, $key) {
+                return $item->msg_count = null;
+            });;
 
     }
 

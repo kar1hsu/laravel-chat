@@ -3772,6 +3772,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -3867,10 +3868,18 @@ __webpack_require__.r(__webpack_exports__);
               content: data.content,
               time: data.time
             });
+
+            if (this.friend_user_id != data.from_user_id && this.uuid != data.from_user_id) {
+              var index_f = this.friends.findIndex(function (value) {
+                return value.friend_user_id == data.from_user_id;
+              });
+              this.friends[index_f].msg_count += 1;
+            }
           } else if (data.send_type === 'add_friend') {
             this.friends.push({
               name: data.from_user_name,
-              user_id: data.from_user_id
+              user_id: data.from_user_id,
+              msg_count: 0
             });
             this.pickFriend(data.from_user_id, data.from_user_name);
           }
@@ -3920,7 +3929,7 @@ __webpack_require__.r(__webpack_exports__);
     addFriend: function addFriend() {
       var _this2 = this;
 
-      this.$messageBox.alert('请输入好友用户名', '提示', {
+      this.$alert('请输入好友用户名', '提示', {
         showInput: true,
         confirmButtonText: '确定',
         cancelButtonText: '取消'
@@ -3985,6 +3994,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     pickFriend: function pickFriend(friend_user_id, name) {
       this.friend_user_id = friend_user_id;
+      var index_f = this.friends.findIndex(function (value) {
+        return value.friend_user_id == friend_user_id;
+      });
+      this.friends[index_f].msg_count = null;
       var flag = false;
       this.rooms.find(function (value) {
         if (value.friend_user_id === friend_user_id) {
@@ -100952,9 +100965,21 @@ var render = function() {
                 }
               },
               [
-                _vm._v("\n                    " + _vm._s(friend.name)),
-                _c("span", { staticClass: "float-right" })
-              ]
+                _c(
+                  "el-badge",
+                  {
+                    staticClass: "item",
+                    attrs: { value: friend.msg_count, max: 99 }
+                  },
+                  [
+                    _c("el-button", { attrs: { size: "small" } }, [
+                      _vm._v(_vm._s(friend.name))
+                    ])
+                  ],
+                  1
+                )
+              ],
+              1
             )
           }),
           0
@@ -116711,8 +116736,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/_vue@2.6.12@vue/dist
 
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
-Vue.prototype.$message = element_ui__WEBPACK_IMPORTED_MODULE_3__["Message"];
-Vue.prototype.$messageBox = element_ui__WEBPACK_IMPORTED_MODULE_3__["MessageBox"];
+Vue.use(element_ui__WEBPACK_IMPORTED_MODULE_3___default.a);
 Vue.component('app', _components_App__WEBPACK_IMPORTED_MODULE_2__["default"]);
 new Vue({
   el: '#app',

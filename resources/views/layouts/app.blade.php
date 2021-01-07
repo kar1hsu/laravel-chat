@@ -45,8 +45,8 @@
                         <li id='show-my-name' class="nav-item dropdown" style="display: none" >
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             </a>
-
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a href="/friend" class="dropdown-item">MyFriends</a>
                                 <a class="dropdown-item" href=""
                                    onclick="logout()">
                                     logout

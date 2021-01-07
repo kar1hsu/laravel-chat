@@ -11,12 +11,11 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 import router from "./routes";
 import App from "./components/App";
-import { Message, MessageBox } from 'element-ui';
+import ElementUI  from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(VueRouter);
-Vue.prototype.$message = Message;
-Vue.prototype.$messageBox = MessageBox;
+Vue.use(ElementUI);
 Vue.component('app', App)
 
 new Vue({
