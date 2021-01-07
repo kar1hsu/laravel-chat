@@ -41,19 +41,20 @@
                             <ul class="navbar-nav ml-auto">
                                 <!-- Authentication Links -->
                                 <li class="nav-item" id="login">
-                                    <a href="/login" class="nav-link">login</a>
+                                    <a href="/login" class="nav-link">Login</a>
                                 </li>
                                 <li class="nav-item" id="register">
-                                    <a href="/register" class="nav-link">register</a>
+                                    <a href="/register" class="nav-link">Register</a>
                                 </li>
                                 <li id='show-my-name' class="nav-item dropdown" style="display: none" >
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a href="/friend" class="dropdown-item">MyFriends</a>
+                                        <a href="/" class="dropdown-item">MyFriends</a>
+                                        <a href="/chat" class="dropdown-item">Room</a>
                                         <a class="dropdown-item" href=""
                                            onclick="logout()">
-                                            logout
+                                            Logout
                                         </a>
                                     </div>
                                 </li>

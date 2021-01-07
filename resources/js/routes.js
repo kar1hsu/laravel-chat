@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 let routes = [
     {
         path : '/',
-        component : require('./components/Chat').default
+        component : require('./components/Friend').default
     },
     {
         path : '/login',
@@ -14,8 +14,8 @@ let routes = [
         component : require('./components/user/Register').default
     },
     {
-        path : '/friend',
-        component : require('./components/Friend').default
+        path : '/chat',
+        component : require('./components/Chat').default
     }
 ]
 
