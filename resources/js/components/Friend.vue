@@ -1,11 +1,12 @@
 <template>
-    <div class="row">
-        <div class="col-md-2">
-            <div class="card-header">好友列表
-                <button class="float-right btn btn-info" v-on:click="addFriend()">添加好友</button>
+    <el-container>
+        <el-aside width="20%">
+            <div class="card-header">
+                <el-button size="mini" type="primary" v-on:click="addFriend()" icon="el-icon-search">搜索</el-button>
             </div>
             <div>
                 <ul class="list-group">
+                    <li class="list-group-item">好友列表</li>
                     <li class="list-group-item" v-for="friend in friends" :key="friend.friend_user_id" v-on:click="pickFriend(friend.friend_user_id, friend.name)">
                         <el-badge :value="friend.msg_count" :max="99" class="item">
                             <el-button size="small">{{ friend.name }}</el-button>
@@ -13,8 +14,8 @@
                     </li>
                 </ul>
             </div>
-        </div>
-        <div class="col-md-8">
+        </el-aside>
+        <el-main width="50%">
             <div class="card" v-for="room in rooms" :key="room.friend_user_id" v-if="friend_user_id === room.friend_user_id">
                 <div class="card-header">{{ room.title }}</div>
                 <div class="card-body">
@@ -39,8 +40,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </el-main>
+    </el-container>
 </template>
 <script>
     export default {

@@ -3773,6 +3773,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -100930,213 +100931,231 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-2" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v("好友列表\n            "),
+  return _c(
+    "el-container",
+    [
+      _c("el-aside", { attrs: { width: "20%" } }, [
         _c(
-          "button",
-          {
-            staticClass: "float-right btn btn-info",
-            on: {
-              click: function($event) {
-                return _vm.addFriend()
-              }
-            }
-          },
-          [_vm._v("添加好友")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c(
-          "ul",
-          { staticClass: "list-group" },
-          _vm._l(_vm.friends, function(friend) {
-            return _c(
-              "li",
+          "div",
+          { staticClass: "card-header" },
+          [
+            _c(
+              "el-button",
               {
-                key: friend.friend_user_id,
-                staticClass: "list-group-item",
+                attrs: {
+                  size: "mini",
+                  type: "primary",
+                  icon: "el-icon-search"
+                },
                 on: {
                   click: function($event) {
-                    return _vm.pickFriend(friend.friend_user_id, friend.name)
+                    return _vm.addFriend()
                   }
                 }
               },
-              [
-                _c(
-                  "el-badge",
+              [_vm._v("搜索")]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", [
+          _c(
+            "ul",
+            { staticClass: "list-group" },
+            [
+              _c("li", { staticClass: "list-group-item" }, [
+                _vm._v("好友列表")
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.friends, function(friend) {
+                return _c(
+                  "li",
                   {
-                    staticClass: "item",
-                    attrs: { value: friend.msg_count, max: 99 }
+                    key: friend.friend_user_id,
+                    staticClass: "list-group-item",
+                    on: {
+                      click: function($event) {
+                        return _vm.pickFriend(
+                          friend.friend_user_id,
+                          friend.name
+                        )
+                      }
+                    }
                   },
                   [
-                    _c("el-button", { attrs: { size: "small" } }, [
-                      _vm._v(_vm._s(friend.name))
-                    ])
+                    _c(
+                      "el-badge",
+                      {
+                        staticClass: "item",
+                        attrs: { value: friend.msg_count, max: 99 }
+                      },
+                      [
+                        _c("el-button", { attrs: { size: "small" } }, [
+                          _vm._v(_vm._s(friend.name))
+                        ])
+                      ],
+                      1
+                    )
                   ],
                   1
                 )
-              ],
-              1
-            )
-          }),
-          0
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-md-8" },
-      _vm._l(_vm.rooms, function(room) {
-        return _vm.friend_user_id === room.friend_user_id
-          ? _c("div", { key: room.friend_user_id, staticClass: "card" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _vm._v(_vm._s(room.title))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "message pre-scrollable",
-                    staticStyle: { height: "600px", overflow: "auto" },
-                    attrs: { id: "message" }
-                  },
-                  _vm._l(_vm.messages, function(message) {
-                    return _c("div", { staticStyle: { overflow: "hidden" } }, [
-                      _vm.friend_user_id === message.user_id
-                        ? _c(
-                            "div",
-                            {
-                              class:
-                                message.user_id === _vm.uuid
-                                  ? "float-right"
-                                  : ""
-                            },
-                            [
-                              _c("div", { staticClass: "content" }, [
-                                _vm._v(
-                                  _vm._s(message.name) +
-                                    " ： " +
-                                    _vm._s(message.content)
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "time" }, [
-                                _c("p", [_vm._v(_vm._s(message.time))])
-                              ])
-                            ]
-                          )
-                        : _vm.uuid === message.user_id &&
-                          _vm.friend_user_id === message.friend_id
-                        ? _c(
-                            "div",
-                            {
-                              class:
-                                message.user_id === _vm.uuid
-                                  ? "float-right"
-                                  : ""
-                            },
-                            [
-                              _c("div", { staticClass: "content" }, [
-                                _vm._v(
-                                  _vm._s(message.name) +
-                                    " ： " +
-                                    _vm._s(message.content)
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "time" }, [
-                                _c("p", [_vm._v(_vm._s(message.time))])
-                              ])
-                            ]
-                          )
-                        : _vm._e()
-                    ])
-                  }),
-                  0
-                ),
+              })
+            ],
+            2
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "el-main",
+        { attrs: { width: "50%" } },
+        _vm._l(_vm.rooms, function(room) {
+          return _vm.friend_user_id === room.friend_user_id
+            ? _c("div", { key: room.friend_user_id, staticClass: "card" }, [
+                _c("div", { staticClass: "card-header" }, [
+                  _vm._v(_vm._s(room.title))
+                ]),
                 _vm._v(" "),
-                _vm._m(0, true),
-                _vm._v(" "),
-                _c("div", { staticClass: "footer" }, [
-                  _c("div", { staticClass: "input-group" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sendMessage,
-                          expression: "sendMessage"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "text", placeholder: "" },
-                      domProps: { value: _vm.sendMessage },
-                      on: {
-                        keydown: function($event) {
-                          if (
-                            !$event.type.indexOf("key") &&
-                            _vm._k(
-                              $event.keyCode,
-                              "enter",
-                              13,
-                              $event.key,
-                              "Enter"
-                            )
-                          ) {
-                            return null
-                          }
-                          return _vm.sendForFriend()
-                        },
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.sendMessage = $event.target.value
-                        }
-                      }
+                _c("div", { staticClass: "card-body" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "message pre-scrollable",
+                      staticStyle: { height: "600px", overflow: "auto" },
+                      attrs: { id: "message" }
+                    },
+                    _vm._l(_vm.messages, function(message) {
+                      return _c(
+                        "div",
+                        { staticStyle: { overflow: "hidden" } },
+                        [
+                          _vm.friend_user_id === message.user_id
+                            ? _c(
+                                "div",
+                                {
+                                  class:
+                                    message.user_id === _vm.uuid
+                                      ? "float-right"
+                                      : ""
+                                },
+                                [
+                                  _c("div", { staticClass: "content" }, [
+                                    _vm._v(
+                                      _vm._s(message.name) +
+                                        " ： " +
+                                        _vm._s(message.content)
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "time" }, [
+                                    _c("p", [_vm._v(_vm._s(message.time))])
+                                  ])
+                                ]
+                              )
+                            : _vm.uuid === message.user_id &&
+                              _vm.friend_user_id === message.friend_id
+                            ? _c(
+                                "div",
+                                {
+                                  class:
+                                    message.user_id === _vm.uuid
+                                      ? "float-right"
+                                      : ""
+                                },
+                                [
+                                  _c("div", { staticClass: "content" }, [
+                                    _vm._v(
+                                      _vm._s(message.name) +
+                                        " ： " +
+                                        _vm._s(message.content)
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "time" }, [
+                                    _c("p", [_vm._v(_vm._s(message.time))])
+                                  ])
+                                ]
+                              )
+                            : _vm._e()
+                        ]
+                      )
                     }),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "submit" },
+                    0
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "divider" }, [
+                    _c("hr", {
+                      staticStyle: { "border-top": "1px dashed #987cb9" },
+                      attrs: { width: "100%", color: "#987cb9", size: "1" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "footer" }, [
+                    _c("div", { staticClass: "input-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.sendMessage,
+                            expression: "sendMessage"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "" },
+                        domProps: { value: _vm.sendMessage },
                         on: {
-                          click: function($event) {
+                          keydown: function($event) {
+                            if (
+                              !$event.type.indexOf("key") &&
+                              _vm._k(
+                                $event.keyCode,
+                                "enter",
+                                13,
+                                $event.key,
+                                "Enter"
+                              )
+                            ) {
+                              return null
+                            }
                             return _vm.sendForFriend()
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.sendMessage = $event.target.value
                           }
                         }
-                      },
-                      [_vm._v("发送(Enter)")]
-                    )
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function($event) {
+                              return _vm.sendForFriend()
+                            }
+                          }
+                        },
+                        [_vm._v("发送(Enter)")]
+                      )
+                    ])
                   ])
                 ])
               ])
-            ])
-          : _vm._e()
-      }),
-      0
-    )
-  ])
+            : _vm._e()
+        }),
+        0
+      )
+    ],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "divider" }, [
-      _c("hr", {
-        staticStyle: { "border-top": "1px dashed #987cb9" },
-        attrs: { width: "100%", color: "#987cb9", size: "1" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
