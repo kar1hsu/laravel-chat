@@ -1,23 +1,21 @@
 <template>
     <el-container>
-        <el-aside width="20%">
-            <div class="card-header">
-                <el-button size="mini" type="primary" v-on:click="addFriend()" icon="el-icon-search">搜索</el-button>
-            </div>
-            <div>
-                <ul class="list-group">
-                    <li class="list-group-item">好友列表</li>
-                    <li class="list-group-item" v-for="friend in friends" :key="friend.friend_user_id" v-on:click="pickFriend(friend.friend_user_id, friend.name)">
-                        <el-badge :value="friend.msg_count" :max="99" class="item">
-                            <el-button size="small">{{ friend.name }}</el-button>
-                        </el-badge>
-                    </li>
-                </ul>
-            </div>
+        <el-aside>
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>好友列表</span>
+                    <el-button style="float: right; padding: 3px 0" size="mini" type="primary" v-on:click="addFriend()" icon="el-icon-search">搜索</el-button>
+                </div>
+                <div v-for="friend in friends" :key="friend.friend_user_id" v-on:click="pickFriend(friend.friend_user_id, friend.name)" class="text item">
+                    <el-badge :value="friend.msg_count" :max="99" class="item">
+                        <el-button size="small">{{ friend.name }}</el-button>
+                    </el-badge>
+                </div>
+            </el-card>
         </el-aside>
-        <el-main width="50%">
-            <div class="card" v-for="room in rooms" :key="room.friend_user_id" v-if="friend_user_id === room.friend_user_id">
-                <div class="card-header">{{ room.title }}</div>
+        <el-main>
+            <el-card class="box-card" v-for="room in rooms" :key="room.friend_user_id" v-if="friend_user_id === room.friend_user_id">
+                <div slot="header" class="clearfix">{{ room.title }}</div>
                 <div class="card-body">
                     <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
                         <div style="overflow:hidden;" v-for="message in messages">
@@ -39,10 +37,32 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </el-card>
         </el-main>
     </el-container>
 </template>
+<style>
+    .text {
+        font-size: 14px;
+    }
+
+    .item {
+        margin-bottom: 18px;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .clearfix:after {
+        clear: both
+    }
+    .el-aside{
+        padding: 20px;
+    }
+
+</style>
 <script>
     export default {
         mounted() {
