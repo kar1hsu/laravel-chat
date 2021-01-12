@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('user')->group(function () {
+Route::middleware('api.cors')->prefix('user')->group(function () {
 
     Route::post('/register', 'Api\UserController@postRegister');
     Route::post('/login', 'Api\UserController@postLogin');

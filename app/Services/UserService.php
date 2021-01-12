@@ -91,7 +91,7 @@ class UserService extends BaseService
             ->get(['users.name', 'users.uuid as friend_user_id'])
             ->each(function ($item, $key) {
                 return $item->msg_count = null;
-            });;
+            });
 
     }
 
