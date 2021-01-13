@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePasswordResetsTable extends Migration
+class ChatMessage extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreatePasswordResetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
+        //
+        Schema::create('chat_message', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->string('email');
-            $table->string('token');
-            $table->tinyInteger('state')->default(0);
-            $table->timestamp('created_at')->nullable();
+            $table->integer('from_uid')->default(0);
+            $table->integer('to_uid')->default(0);
+            $table->tinyInteger('message_type')->default(0);
+            $table->text('message');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +31,7 @@ class CreatePasswordResetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('password_resets');
+        //
+        Schema::dropIfExists('chat_message');
     }
 }

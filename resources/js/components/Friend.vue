@@ -19,11 +19,11 @@
                 <div class="card-body">
                     <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
                         <div style="overflow:hidden;" v-for="message in messages">
-                            <div :class="message.user_id === uuid ? 'float-right' : ''" v-if="friend_user_id === message.user_id">
+                            <div :class="message.user_id === user_id ? 'float-right' : ''" v-if="friend_user_id === message.user_id">
                                 <div class="content">{{ message.name }} ： {{ message.content }}</div>
                                 <div class="time"><p>{{ message.time }}</p></div>
                             </div>
-                            <div :class="message.user_id === uuid ? 'float-right' : ''" v-else-if="uuid === message.user_id && friend_user_id === message.friend_id">
+                            <div :class="message.user_id === user_id ? 'float-right' : ''" v-else-if="user_id === message.user_id && friend_user_id === message.friend_id">
                                 <div class="content">{{ message.name }} ： {{ message.content }}</div>
                                 <div class="time"><p>{{ message.time }}</p></div>
                             </div>
@@ -78,11 +78,11 @@
             }).then(response => {
                 console.log(response.data)
                 this.friends = response.data.data;
-                if( this.friends !==undefined && this.friends.length > 0 ){
+                if( this.friends !== undefined && this.friends.length > 0 ){
                     this.pickFriend(this.friends[0].friend_user_id, this.friends[0].name)
                 }
             })
-            this.uuid = localStorage.getItem("uuid")
+            this.user_id = localStorage.getItem("user_id")
             this.token = localStorage.getItem("token")
 
         },
@@ -94,7 +94,7 @@
                 sendMessage : null,
                 friend_user_id : null,
                 token : null,
-                uuid : null,
+                user_id : null,
                 rooms : [],
             }
         },
@@ -153,7 +153,7 @@
                                 time: data.time,
                             });
 
-                            if (this.friend_user_id != data.from_user_id && this.uuid != data.from_user_id) {
+                            if (this.friend_user_id != data.from_user_id && this.user_id != data.from_user_id) {
                                 let index_f = this.friends.findIndex((value) => value.friend_user_id == data.from_user_id)
                                 this.friends[index_f].msg_count += 1
                             }

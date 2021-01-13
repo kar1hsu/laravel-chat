@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <div class="message pre-scrollable" style="height: 600px;overflow:auto;" id="message">
                         <div style="overflow:hidden;" v-for="message in messages">
-                            <div :class="message.user_id === uuid ? 'float-right' : ''">
+                            <div :class="message.user_id === user_id ? 'float-right' : ''">
                                 <div class="content">{{ message.name }} ： {{ message.content }}</div>
                                 <div class="time"><p>{{ message.time }}</p></div>
                             </div>
@@ -37,7 +37,7 @@
                 window.location.href="/login";
                 return;
             }
-            this.uuid = localStorage.getItem("uuid")
+            this.user_id = localStorage.getItem("user_id")
             this.token = localStorage.getItem("token")
             this.init();
         },
@@ -47,7 +47,7 @@
                 messages : [],
                 sendMessage : null,
                 token : null,
-                uuid : null
+                user_id : null
             }
         },
         methods: {

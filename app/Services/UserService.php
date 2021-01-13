@@ -36,8 +36,9 @@ class UserService extends BaseService
 
         return [
             'token' => encrypt($uuid),
+            'user_id' => $uuid,
             'name' => $request->name,
-            'uuid' => $uuid,
+            'avatar' => '',
         ];
     }
 
@@ -59,8 +60,9 @@ class UserService extends BaseService
 
         return [
             'token' => encrypt($user->uuid),
+            'user_id' => $user->uuid,
             'name' => $user->name,
-            'uuid' => $user->uuid,
+            'avatar' => '',
         ];
     }
 
@@ -86,13 +88,39 @@ class UserService extends BaseService
         if (!$user = User::where('uuid', $uuid)->first()) {
             throw new \Exception('身份验证已失效');
         }
-        return Friend::where('friends.uid', $user['id'])
-            ->leftJoin('users', 'users.id', '=', 'friends.fid')
-            ->get(['users.name', 'users.uuid as friend_user_id'])
-            ->each(function ($item, $key) {
-                return $item->msg_count = null;
-            });
+        $friends = [];
 
+        // 获取和自己相关的所有好友关系
+        $list = Friend::where(
+            function ($query) use ($user) {
+                $query->where('uid', $user['id'])
+                    ->orWhere('friend_uid', $user['id']);
+            }
+        )->get();
+        if ($list) {
+            // 取出加自己好友 和 自己加对方好友的 用户id并去重
+            $uids = $list->pluck('uid')->toArray();
+            $friend_uids = $list->pluck('friend_uid')->toArray();
+            $uid_arr = array_unique(array_merge($uids, $friend_uids));
+            $users = User::whereIn('id', $uid_arr)->get()->toArray();
+            $i = 0;
+            foreach ($uid_arr as $index => $item) {
+                // 剔除自己
+                if ($item == $user['id']) {
+                    continue;
+                }
+                foreach ($users as $key => $value) {
+                    if ($item == $value['id']) {
+                        $friends[$i]['friend_user_id'] = $value['uuid'];
+                        $friends[$i]['name'] = $value['name'];
+                        $friends[$i]['avatar'] = $value['avatar'];
+                        $friends[$i]['msg_count'] = null;
+                        $i++;
+                    }
+                }
+            }
+        }
+        return $friends;
     }
 
     /**
@@ -113,22 +141,33 @@ class UserService extends BaseService
         if (!$friend = User::where('name', $request->name)->first()) {
             throw new \Exception('用户不存在');
         }
-        if (Friend::where('uid', $user['id'])->where('fid', $friend['id'])->first()) {
+        $res = Friend::where(
+            function ($query) use ($user, $friend) {
+                $query->where(
+                    function ($query) use ($user, $friend) {
+                        $query->where('uid', $user['id'])->where('friend_uid', $friend['id']);
+                    }
+                )->orWhere(
+                    function ($query) use ($user, $friend) {
+                        $query->where('uid', $friend['id'])->where('friend_uid', $user['id']);
+                    }
+                );
+            }
+        )->first();
+        if ($res) {
             throw new \Exception('对方已是您的好友');
         }
-        $add1 = [
+        $add = [
             'uid' => $user['id'],
-            'fid' => $friend['id'],
+            'friend_uid' => $friend['id'],
+            'created_at' => date('Y-m-d H:i:s'),
         ];
-        $add2 = [
-            'uid' => $friend['id'],
-            'fid' => $user['id'],
-        ];
-        Friend::insert($add1);
-        Friend::insert($add2);
+
+        Friend::insert($add);
 
         return [
             'name' => $friend['name'],
+            'avatar' => $friend['avatar'],
             'friend_user_id' => $friend['uuid'],
         ];
     }

@@ -97,9 +97,10 @@
                         return;
                     }
                     localStorage.setItem('is_login', 1);
-                    localStorage.setItem('name', data.data.name);
                     localStorage.setItem('token', data.data.token);
-                    localStorage.setItem('uuid', data.data.uuid);
+                    localStorage.setItem('user_id', data.data.user_id);
+                    localStorage.setItem('name', data.data.name);
+                    localStorage.setItem('avatar', data.data.avatar);
                     console.log(response.data)
                     window.location.href="/";
                 })

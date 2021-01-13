@@ -3594,7 +3594,7 @@ __webpack_require__.r(__webpack_exports__);
       return;
     }
 
-    this.uuid = localStorage.getItem("uuid");
+    this.user_id = localStorage.getItem("user_id");
     this.token = localStorage.getItem("token");
     this.init();
   },
@@ -3604,7 +3604,7 @@ __webpack_require__.r(__webpack_exports__);
       messages: [],
       sendMessage: null,
       token: null,
-      uuid: null
+      user_id: null
     };
   },
   methods: {
@@ -3816,7 +3816,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.pickFriend(_this.friends[0].friend_user_id, _this.friends[0].name);
       }
     });
-    this.uuid = localStorage.getItem("uuid");
+    this.user_id = localStorage.getItem("user_id");
     this.token = localStorage.getItem("token");
   },
   data: function data() {
@@ -3827,7 +3827,7 @@ __webpack_require__.r(__webpack_exports__);
       sendMessage: null,
       friend_user_id: null,
       token: null,
-      uuid: null,
+      user_id: null,
       rooms: []
     };
   },
@@ -3890,7 +3890,7 @@ __webpack_require__.r(__webpack_exports__);
               time: data.time
             });
 
-            if (this.friend_user_id != data.from_user_id && this.uuid != data.from_user_id) {
+            if (this.friend_user_id != data.from_user_id && this.user_id != data.from_user_id) {
               var index_f = this.friends.findIndex(function (value) {
                 return value.friend_user_id == data.from_user_id;
               });
@@ -4133,9 +4133,10 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         localStorage.setItem('is_login', 1);
-        localStorage.setItem('name', data.data.name);
         localStorage.setItem('token', data.data.token);
-        localStorage.setItem('uuid', data.data.uuid);
+        localStorage.setItem('user_id', data.data.user_id);
+        localStorage.setItem('name', data.data.name);
+        localStorage.setItem('avatar', data.data.avatar);
         console.log(response.data);
         window.location.href = "/";
       });
@@ -4264,9 +4265,10 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         localStorage.setItem('is_login', 1);
-        localStorage.setItem('name', data.data.name);
         localStorage.setItem('token', data.data.token);
-        localStorage.setItem('uuid', data.data.uuid);
+        localStorage.setItem('user_id', data.data.user_id);
+        localStorage.setItem('name', data.data.name);
+        localStorage.setItem('avatar', data.data.avatar);
         console.log(response.data);
         window.location.href = "/";
       });
@@ -100893,7 +100895,9 @@ var render = function() {
               return _c("div", { staticStyle: { overflow: "hidden" } }, [
                 _c(
                   "div",
-                  { class: message.user_id === _vm.uuid ? "float-right" : "" },
+                  {
+                    class: message.user_id === _vm.user_id ? "float-right" : ""
+                  },
                   [
                     _c("div", { staticClass: "content" }, [
                       _vm._v(
@@ -101117,7 +101121,7 @@ var render = function() {
                                   "div",
                                   {
                                     class:
-                                      message.user_id === _vm.uuid
+                                      message.user_id === _vm.user_id
                                         ? "float-right"
                                         : ""
                                   },
@@ -101135,13 +101139,13 @@ var render = function() {
                                     ])
                                   ]
                                 )
-                              : _vm.uuid === message.user_id &&
+                              : _vm.user_id === message.user_id &&
                                 _vm.friend_user_id === message.friend_id
                               ? _c(
                                   "div",
                                   {
                                     class:
-                                      message.user_id === _vm.uuid
+                                      message.user_id === _vm.user_id
                                         ? "float-right"
                                         : ""
                                   },
