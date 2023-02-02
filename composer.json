@@ -13,7 +13,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
-        "symfony/http-kernel": "4.4.13",
+        "symfony/http-kernel": "4.4.50",
         "workerman/gateway-worker": "^3.0",
         "workerman/gatewayclient": "^3.0"
     },
